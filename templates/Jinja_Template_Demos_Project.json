@@ -1,0 +1,1277 @@
+[
+  {
+    "name": "Jinja_Template_Demos",
+    "description": "A collection of Jinja templates that demonstrate various functionalities.",
+    "tags": [],
+    "templates": [
+      {
+        "name": "Jinja_CIDR_String_Slicing_Demo",
+        "description": "A template that demonstrates using Jinja Filters and Python functions to slice strings, in order to convert a CIDR-formatted IP and Subnet into its component parts, then build BGP statements.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% include \"Jinja_Template_Demos/CIDR_Subnet_Masks\" %}\n{% set cidr = CIDR_Notation | split('/') %}\nIP/Mask Split: {{ cidr }}\nIP = {{ cidr[0] }}\nMask = {{ cidr[1] }}\n{% set octets = cidr[0] | split('.') %}\nIP Split: {{ octets }}\n\n{% if octets | length() == 4 %}\n  {% set oct1 = octets[0] | int %}\n  {% set oct2 = octets[1] | int %}\n  {% set oct3 = octets[2] | int %}\n  {% set oct4 = octets[3] | int %}\n\n*******************************************************\n\nOctet 1 = {{ oct1 }}, Integer?: {{ oct1 is number }}\nOctet 2 = {{ oct2 }}, Integer?: {{ oct2 is number }}\nOctet 3 = {{ oct3 }}, Integer?: {{ oct3 is number }}\nOctet 4 = {{ oct4 }}, Integer?: {{ oct4 is number }}\nSubnet Mask = {{ subnet_masks[cidr[1]] }}\nBGP Statement = network {{ cidr[0] }} mask {{ subnet_masks[cidr[1]] }}\n{% else %}\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\nNumber of octets in CIDR input is not 4.\n{% endif %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "CIDR_Notation",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% include \"Jinja_Template_Demos/CIDR_Subnet_Masks\" %}\n{% set cidr = CIDR_Notation | split('/') %}\nIP/Mask Split: {{ cidr }}\nIP = {{ cidr[0] }}\nMask = {{ cidr[1] }}\n{% set octets = cidr[0] | split('.') %}\nIP Split: {{ octets }}\n\n{% if octets | length() == 4 %}\n  {% set oct1 = octets[0] | int %}\n  {% set oct2 = octets[1] | int %}\n  {% set oct3 = octets[2] | int %}\n  {% set oct4 = octets[3] | int %}\n\n*******************************************************\n\nOctet 1 = {{ oct1 }}, Integer?: {{ oct1 is number }}\nOctet 2 = {{ oct2 }}, Integer?: {{ oct2 is number }}\nOctet 3 = {{ oct3 }}, Integer?: {{ oct3 is number }}\nOctet 4 = {{ oct4 }}, Integer?: {{ oct4 is number }}\nSubnet Mask = {{ subnet_masks[cidr[1]] }}\nBGP Statement = network {{ cidr[0] }} mask {{ subnet_masks[cidr[1]] }}\n{% else %}\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\nNumber of octets in CIDR input is not 4.\n{% endif %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "CIDR_Notation",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1660757866068,
+        "lastUpdateTime": 1660758041584,
+        "latestVersionTime": 1660758047251,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "b900cc89-0a78-44df-8c26-4d0fe6978e1a",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "CIDR_Subnet_Masks",
+        "description": "A template containing a Dictionary object, mapping CIDR subnet bits to Subnet Mask notation.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% set subnet_masks = {\n\"32\": \"255.255.255.255\",\n\"31\": \"255.255.255.254\",\n\"30\": \"255.255.255.252\",\n\"29\": \"255.255.255.248\",\n\"28\": \"255.255.255.240\",\n\"27\": \"255.255.255.224\",\n\"26\": \"255.255.255.192\",\n\"25\": \"255.255.255.128\",\n\"24\": \"255.255.255.0\",\n\"23\": \"255.255.254.0\",\n\"22\": \"255.255.252.0\",\n\"21\": \"255.255.248.0\",\n\"20\": \"255.255.240.0\",\n\"19\": \"255.255.224.0\",\n\"18\": \"255.255.192.0\",\n\"17\": \"255.255.128.0\",\n\"16\": \"255.255.0.0\",\n\"15\": \"255.254.0.0\",\n\"14\": \"255.252.0.0\",\n\"13\": \"255.248.0.0\",\n\"12\": \"255.240.0.0\",\n\"11\": \"255.224.0.0\",\n\"10\": \"255.192.0.0\",\n\"9\": \"255.128.0.0\",\n\"8\": \"255.0.0.0\",\n\"7\": \"254.0.0.0\",\n\"6\": \"252.0.0.0\",\n\"5\": \"248.0.0.0\",\n\"4\": \"240.0.0.0\",\n\"3\": \"224.0.0.0\",\n\"2\": \"192.0.0.0\",\n\"1\": \"128.0.0.0\",\n\"0\": \"0.0.0.0\"} %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% set subnet_masks = {\n\"32\": \"255.255.255.255\",\n\"31\": \"255.255.255.254\",\n\"30\": \"255.255.255.252\",\n\"29\": \"255.255.255.248\",\n\"28\": \"255.255.255.240\",\n\"27\": \"255.255.255.224\",\n\"26\": \"255.255.255.192\",\n\"25\": \"255.255.255.128\",\n\"24\": \"255.255.255.0\",\n\"23\": \"255.255.254.0\",\n\"22\": \"255.255.252.0\",\n\"21\": \"255.255.248.0\",\n\"20\": \"255.255.240.0\",\n\"19\": \"255.255.224.0\",\n\"18\": \"255.255.192.0\",\n\"17\": \"255.255.128.0\",\n\"16\": \"255.255.0.0\",\n\"15\": \"255.254.0.0\",\n\"14\": \"255.252.0.0\",\n\"13\": \"255.248.0.0\",\n\"12\": \"255.240.0.0\",\n\"11\": \"255.224.0.0\",\n\"10\": \"255.192.0.0\",\n\"9\": \"255.128.0.0\",\n\"8\": \"255.0.0.0\",\n\"7\": \"254.0.0.0\",\n\"6\": \"252.0.0.0\",\n\"5\": \"248.0.0.0\",\n\"4\": \"240.0.0.0\",\n\"3\": \"224.0.0.0\",\n\"2\": \"192.0.0.0\",\n\"1\": \"128.0.0.0\",\n\"0\": \"0.0.0.0\"} %}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1660758006321,
+        "lastUpdateTime": 1660758021555,
+        "latestVersionTime": 1660758026975,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "e0ff9143-e241-4d6e-9b8c-6e811b1a57d4",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "Jinja_Admin_Down_Port_Demo",
+        "description": "A template which loops through all interfaces on a switch, checks if their port type and administrative state, and applies an appropriate configuration.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% for int in __interface %}\n{% if int.portType == 'Ethernet Port' and int.interfaceType == 'Physical' and int.className == 'SwitchPort' and int.adminStatus == 'DOWN'%}\ninterface {{ int.portName }}\n{{ blackhole_port(description, access_vlan_id) }}\n{% endif %}\n{% endfor %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "access_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% for int in __interface %}\n{% if int.portType == 'Ethernet Port' and int.interfaceType == 'Physical' and int.className == 'SwitchPort' and int.adminStatus == 'DOWN'%}\ninterface {{ int.portName }}\n{{ blackhole_port(description, access_vlan_id) }}\n{% endif %}\n{% endfor %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "access_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1660757070986,
+        "lastUpdateTime": 1660757455034,
+        "latestVersionTime": 1660757480059,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "636f6364-ca0e-466b-b2a1-01996e352526",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "Jinja_GUI_Interface_Picker_Demo",
+        "description": "A template that demonstrates how to create a multi-select interface \"picker\" variable in a Jinja template.  This functionality is mostly useful in the DNA Center Web UI, though a List could be passed to the template programmatically via the API.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% for interface in interface_list %}\ninterface {{ interface }}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ access_vlan_id }}\n switchport voice vlan {{ voice_vlan_id }}\n{% endfor %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "access_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "interface_list",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "{\"provider\":\"Inventory\",\"attributeToDisplay\":\"portName\",\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":\"f4807fdd-b9e1-427e-84fc-dfe8fb3ceff4\"},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"source\":\"Inventory\",\"entity\":\"Interface\",\"attribute\":\"portName\",\"filterType\":\"matches\",\"filterValue\":\"Ethernet Port\",\"filterByAttribute\":\"portType\"}",
+            "displayName": null
+          },
+          {
+            "parameterName": "voice_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% for interface in interface_list %}\ninterface {{ interface }}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ access_vlan_id }}\n switchport voice vlan {{ voice_vlan_id }}\n{% endfor %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "voice_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "interface_list",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "{\"provider\":\"Inventory\",\"attributeToDisplay\":\"portName\",\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":\"f4807fdd-b9e1-427e-84fc-dfe8fb3ceff4\"},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"source\":\"Inventory\",\"entity\":\"Interface\",\"attribute\":\"portName\",\"filterType\":\"matches\",\"filterValue\":\"Ethernet Port\",\"filterByAttribute\":\"portType\"}",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "access_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1660758448168,
+        "lastUpdateTime": 1660758509348,
+        "latestVersionTime": 1660758517460,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "8f9f8922-e2c5-4acc-86a2-3d25b09b3c1e",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "Jinja_Syntax_Demo",
+        "description": "A template that demonstrates the various Syntax concepts of the Jinja templating language.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{# Template picker that allows you to choose which syntax concept to demo. #}\n{% include Jinja_Template_Demos/macros_for_importing %}\n{% set sd = syntax_demo %}\n{% set variable = variable %}\nFull documentation on Jinja Templates can be found at this URL:\nhttps://jinja.palletsprojects.com/en/latest/templates/\n---------------------------------------------------------------\n{# ~~~~~~~~~~~~~~~~~~~~~~~~VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% if sd == \"Variables\" %}\n{% raw %}\n*********TEMPLATE:**********\nThis is the variable value being printed: {{ variable }}\n\n{% endraw %}\n==========OUTPUT:===========\nThis is the variable value being printed: {{ variable }}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~ESCAPING~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"Escaping\" %}\n*********TEMPLATE:**********\nThe simplest way to escape special characters is to enclose them in an \"Expresion\",\nwhich is surrounded by double curly braces, then single or double quotes.\n\nThis template contains reserved characters: {% raw %} {{ '{{%#' }}{% endraw %}\n\nFor larger blocks, you can use the Raw tags: {{ '{%' }} raw {{ '%}' }} escaped_code{{ '{%' }} endraw {{ '%}' }}\n\n==========OUTPUT:===========\nThe simplest way to escape special characters is to enclose them in an \"Expression\",\nwhich is surrounded by double curly braces, then single or double quotes.\n\nThis template contains reserved characters: {{ '{{%#' }}\nFor larger blocks, you can use the Raw tags:{% raw %} escaped_code{% endraw %}\n\n{# ~~~~~~~~~~~~~~~~~~~~~~~~MACROS~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"Macros\" %}\n{% raw %}\n*********TEMPLATE:**********\nThis template imports and uses a reusable Macro.\nMacros are blocks of reusable text or code stored in external templates,\nwhich can be imported into other templates and referenced as needed:\n{% include Jinja_Template_Demos/macros_for_importing %}\n\nMacros can accept zero or more input variables.\n\nThis is a simple macro with no input variables:\n{{ simple_macro() }}\n\nThis is a simple macro with one variable input:\n{{ simple_macro_with_variable(variable) }}\n\n{% endraw %}\n==========OUTPUT:===========\nThis template imports and uses a reusable Macro.\nMacros are blocks of reusable text or code stored in external templates,\nwhich can be imported into other templates and referenced as needed:\n\nMacros can accept zero or more input variables.\n\nThis is a simple macro with no input variables:\n{{ simple_macro() }}\n\nThis is a simple macro with one variable input:\n{{ simple_macro_with_variable(variable) }}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~IF ELSE~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"IfElse\" %}\n{% raw %}\n*********TEMPLATE:**********\nYou can use logical operations, like If/Else statements, in a template.\nHere's an example:\n{% if variable == 'value' %}\nYou didn't change the variable value \"{{ variable }}\" from it's default.\n{% elif variable == 'hello' %}\nWell hello to you too!\n{% else %}\nThis is the catch-all statement. The value of the variable is: {{ variable }}\n\n{% endraw %}\n==========OUTPUT:===========\nYou can use logical operations, like If/Else statements, in a template.\nHere's an example:\n{% if variable == 'value' %}\nYou didn't change the variable value \"{{ variable }}\" from it's default.\n{% elif variable == 'hello' %}\nWell hello to you too!\n{% else %}\nThis is the catch-all statement. The value of the variable is: {{ variable }}\n{% endif %}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~FOR LOOPS~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"ForLoop\" %}\n{% raw %}\n*********TEMPLATE:**********\nYou can use a For Loop in templates to iterate through items in an object.\nLet's create a List object (aka an \"Array\") to loop through:\n{% set mylist = ['item1', 'item2', 'item3'] %}\n\nNow let's loop through every item in that List and perform some action:\n\n{% for item in mylist %}\nWe can reference what iteration number we're on: {{ loop.index }}\nIf we want that iteration index to start at zero: {{ loop.index0 }}\nAnd we can reference the value of the item at that index: {{ item }}\n\n{% endfor %}\n\n{% endraw %}\n==========OUTPUT:===========\nYou can use a For Loop in templates to iterate through items in an object.\nLet's create a List object (aka an \"Array\") to loop through:\n{% set mylist = ['item1', 'item2', 'item3'] %}\n\nNow let's loop through every item in that List and perform some action:\n\n{% for item in mylist %}\nWe can reference what iteration number we're on: {{ loop.index }}\nIf we want that iteration index to start at zero: {{ loop.index0 }}\nAnd we can reference the value of the item at that index: {{ item }}\n\n{% endfor %}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~MATH~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"MathAndLogic\" %}\n{% raw %}\n*********TEMPLATE:**********\nTemplates can perform math and comparison operations, just like Python.\n\nSupported math operators include:\n+ (addition), - (subtraction), * (multiplication), / (division, returns decimal), // (division, returns integer), ** (exponent)\n\nSupported comparison operators include:\n== (equality), != (inequality), > (greater than), < (less than), >= (greater than or equal to), <= (less than or equal to)\n\nAs well as logical operators, including:\nand, or, not, () (used to group expressions), if, for, in, is\n\nHere are some examples of these operators in action:\n1 + 1: {{ 1 + 1 }}\n1 - 1: {{ 1 - 1 }}\n10 / 4: {{ 10 / 4 }} (Floating point, or \"decimal\", is returned)\n10 // 4: {{ 10 // 4 }} (Truncated integer is returned)\n1 == 2: {{ 1 == 2 }} (Returns boolean value, True/False)\n1 != 2: {{ 1 != 2 }}\n1 <= 2: {{ 1 <= 2 }}\n1 == 1 and 2 == 2: {{ 1 == 1 and 2 == 2 }}\n4 in [1, 2, 3]: {{ 4 in [1, 2, 3] }}\nvariable is defined: {{ variable is defined }} (Runs a test evaluation)\n1 is odd: {{ 1 is odd }}\n\n{% endraw %}\n==========OUTPUT:===========\nTemplates can perform math and comparison operations, just like Python.\n\nSupported math operators include:\n+ (addition), - (subtraction), * (multiplication), / (division, returns decimal), // (division, returns integer), ** (exponent)\n\nSupported comparison operators include:\n== (equality), != (inequality), > (greater than), < (less than), >= (greater than or equal to), <= (less than or equal to)\n\nAs well as logical operators, including:\nand, or, not, () (used to group expressions), if, for, in, is\n\nHere are some examples of these operators in action:\n1 + 1: {{ 1 + 1 }}\n1 - 1: {{ 1 - 1 }}\n10 / 4: {{ 10 / 4 }} (Floating point, or \"decimal\", is returned)\n10 // 4: {{ 10 // 4 }} (Truncated integer is returned)\n1 == 2: {{ 1 == 2 }} (Returns boolean value, True/False)\n1 != 2: {{ 1 != 2 }}\n1 <= 2: {{ 1 <= 2 }}\n1 == 1 and 2 == 2: {{ 1 == 1 and 2 == 2 }}\n4 in [1, 2, 3]: {{ 4 in [1, 2, 3] }}\nvariable is defined: {{ variable is defined }} (Runs a test evaluation)\n1 is odd: {{ 1 is odd }}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~FILTERS~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"Filters\" %}\n{% raw %}\n*********TEMPLATE:**********\nJinja template Filters are INCREDIBLY POWERFUL. They are also sometimes difficult to master.\nJinja Filters can modify variables. Filters can also be chained together, with the output of one\nfilter being passed to the next. Filters are separated from variables by a | \"pipe\" symbol.\n\nOne very useful example is casting a String type variable into an Integer type.  Here's an example:\n{% set number = \"1\" %}\n\nAdding a String to an Integer will result in concatenation: {{ number + 1 }}\nBut casting that String as an Integer first fixes the problem: {{ number|int + 1 }}\n\nThere are many other Filters for manipulating variables:\nChange string variables to upper case: {{ variable|upper }}\nOr lower case: {{ variable|lower }}\nOr capitalize: {{ variable|capitalize }}\nFinding unique values in a variable: {{ variable|unique }}\nGet the length of a variable: {{ variable|length }}\n\nThe best way to learn Filters is to try them out.\n\n{% endraw %}\n==========OUTPUT:===========\nJinja template Filters are INCREDIBLY POWERFUL. They are also sometimes difficult to master.\nJinja Filters can modify variables. Filters can also be chained together, with the output of one\nfilter being passed to the next. Filters are separated from variables by a | \"pipe\" symbol.\n\nOne very useful example is casting a String type variable into an Integer type.  Here's an example:\n{% set number = \"1\" %}\n\nAdding a String to an Integer will result in concatenation: {{ number + 1 }}\nBut casting that String as an Integer first fixes the problem: {{ number|int + 1 }}\n\nThere are many other Filters for manipulating variables:\nChange string variables to upper case: {{ variable|upper }}\nOr lower case: {{ variable|lower }}\nOr capitalize: {{ variable|capitalize }}\nFinding unique values in a variable: {{ variable|unique }}\nGet the length of a variable: {{ variable|length }}\n\nThe best way to learn Filters is to try them out.\n\n{% endif %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "syntax_demo",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "SINGLE_SELECT",
+              "selectionValues": {
+                "Escaping": "Escaping",
+                "Filters": "Filters",
+                "ForLoop": "ForLoop",
+                "IfElse": "IfElse",
+                "Macros": "Macros",
+                "MathAndLogic": "MathAndLogic",
+                "Variables": "Variables"
+              },
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "variable",
+            "dataType": "STRING",
+            "defaultValue": "value",
+            "description": "Variable input",
+            "required": false,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{# Template picker that allows you to choose which syntax concept to demo. #}\n{% include Jinja_Template_Demos/macros_for_importing %}\n{% set sd = syntax_demo %}\n{% set variable = variable %}\nFull documentation on Jinja Templates can be found at this URL:\nhttps://jinja.palletsprojects.com/en/latest/templates/\n---------------------------------------------------------------\n{# ~~~~~~~~~~~~~~~~~~~~~~~~VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% if sd == \"Variables\" %}\n{% raw %}\n*********TEMPLATE:**********\nThis is the variable value being printed: {{ variable }}\n\n{% endraw %}\n==========OUTPUT:===========\nThis is the variable value being printed: {{ variable }}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~ESCAPING~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"Escaping\" %}\n*********TEMPLATE:**********\nThe simplest way to escape special characters is to enclose them in an \"Expresion\",\nwhich is surrounded by double curly braces, then single or double quotes.\n\nThis template contains reserved characters: {% raw %} {{ '{{%#' }}{% endraw %}\n\nFor larger blocks, you can use the Raw tags: {{ '{%' }} raw {{ '%}' }} escaped_code{{ '{%' }} endraw {{ '%}' }}\n\n==========OUTPUT:===========\nThe simplest way to escape special characters is to enclose them in an \"Expression\",\nwhich is surrounded by double curly braces, then single or double quotes.\n\nThis template contains reserved characters: {{ '{{%#' }}\nFor larger blocks, you can use the Raw tags:{% raw %} escaped_code{% endraw %}\n\n{# ~~~~~~~~~~~~~~~~~~~~~~~~MACROS~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"Macros\" %}\n{% raw %}\n*********TEMPLATE:**********\nThis template imports and uses a reusable Macro.\nMacros are blocks of reusable text or code stored in external templates,\nwhich can be imported into other templates and referenced as needed:\n{% include Jinja_Template_Demos/macros_for_importing %}\n\nMacros can accept zero or more input variables.\n\nThis is a simple macro with no input variables:\n{{ simple_macro() }}\n\nThis is a simple macro with one variable input:\n{{ simple_macro_with_variable(variable) }}\n\n{% endraw %}\n==========OUTPUT:===========\nThis template imports and uses a reusable Macro.\nMacros are blocks of reusable text or code stored in external templates,\nwhich can be imported into other templates and referenced as needed:\n\nMacros can accept zero or more input variables.\n\nThis is a simple macro with no input variables:\n{{ simple_macro() }}\n\nThis is a simple macro with one variable input:\n{{ simple_macro_with_variable(variable) }}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~IF ELSE~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"IfElse\" %}\n{% raw %}\n*********TEMPLATE:**********\nYou can use logical operations, like If/Else statements, in a template.\nHere's an example:\n{% if variable == 'value' %}\nYou didn't change the variable value \"{{ variable }}\" from it's default.\n{% elif variable == 'hello' %}\nWell hello to you too!\n{% else %}\nThis is the catch-all statement. The value of the variable is: {{ variable }}\n\n{% endraw %}\n==========OUTPUT:===========\nYou can use logical operations, like If/Else statements, in a template.\nHere's an example:\n{% if variable == 'value' %}\nYou didn't change the variable value \"{{ variable }}\" from it's default.\n{% elif variable == 'hello' %}\nWell hello to you too!\n{% else %}\nThis is the catch-all statement. The value of the variable is: {{ variable }}\n{% endif %}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~FOR LOOPS~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"ForLoop\" %}\n{% raw %}\n*********TEMPLATE:**********\nYou can use a For Loop in templates to iterate through items in an object.\nLet's create a List object (aka an \"Array\") to loop through:\n{% set mylist = ['item1', 'item2', 'item3'] %}\n\nNow let's loop through every item in that List and perform some action:\n\n{% for item in mylist %}\nWe can reference what iteration number we're on: {{ loop.index }}\nIf we want that iteration index to start at zero: {{ loop.index0 }}\nAnd we can reference the value of the item at that index: {{ item }}\n\n{% endfor %}\n\n{% endraw %}\n==========OUTPUT:===========\nYou can use a For Loop in templates to iterate through items in an object.\nLet's create a List object (aka an \"Array\") to loop through:\n{% set mylist = ['item1', 'item2', 'item3'] %}\n\nNow let's loop through every item in that List and perform some action:\n\n{% for item in mylist %}\nWe can reference what iteration number we're on: {{ loop.index }}\nIf we want that iteration index to start at zero: {{ loop.index0 }}\nAnd we can reference the value of the item at that index: {{ item }}\n\n{% endfor %}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~MATH~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"MathAndLogic\" %}\n{% raw %}\n*********TEMPLATE:**********\nTemplates can perform math and comparison operations, just like Python.\n\nSupported math operators include:\n+ (addition), - (subtraction), * (multiplication), / (division, returns decimal), // (division, returns integer), ** (exponent)\n\nSupported comparison operators include:\n== (equality), != (inequality), > (greater than), < (less than), >= (greater than or equal to), <= (less than or equal to)\n\nAs well as logical operators, including:\nand, or, not, () (used to group expressions), if, for, in, is\n\nHere are some examples of these operators in action:\n1 + 1: {{ 1 + 1 }}\n1 - 1: {{ 1 - 1 }}\n10 / 4: {{ 10 / 4 }} (Floating point, or \"decimal\", is returned)\n10 // 4: {{ 10 // 4 }} (Truncated integer is returned)\n1 == 2: {{ 1 == 2 }} (Returns boolean value, True/False)\n1 != 2: {{ 1 != 2 }}\n1 <= 2: {{ 1 <= 2 }}\n1 == 1 and 2 == 2: {{ 1 == 1 and 2 == 2 }}\n4 in [1, 2, 3]: {{ 4 in [1, 2, 3] }}\nvariable is defined: {{ variable is defined }} (Runs a test evaluation)\n1 is odd: {{ 1 is odd }}\n\n{% endraw %}\n==========OUTPUT:===========\nTemplates can perform math and comparison operations, just like Python.\n\nSupported math operators include:\n+ (addition), - (subtraction), * (multiplication), / (division, returns decimal), // (division, returns integer), ** (exponent)\n\nSupported comparison operators include:\n== (equality), != (inequality), > (greater than), < (less than), >= (greater than or equal to), <= (less than or equal to)\n\nAs well as logical operators, including:\nand, or, not, () (used to group expressions), if, for, in, is\n\nHere are some examples of these operators in action:\n1 + 1: {{ 1 + 1 }}\n1 - 1: {{ 1 - 1 }}\n10 / 4: {{ 10 / 4 }} (Floating point, or \"decimal\", is returned)\n10 // 4: {{ 10 // 4 }} (Truncated integer is returned)\n1 == 2: {{ 1 == 2 }} (Returns boolean value, True/False)\n1 != 2: {{ 1 != 2 }}\n1 <= 2: {{ 1 <= 2 }}\n1 == 1 and 2 == 2: {{ 1 == 1 and 2 == 2 }}\n4 in [1, 2, 3]: {{ 4 in [1, 2, 3] }}\nvariable is defined: {{ variable is defined }} (Runs a test evaluation)\n1 is odd: {{ 1 is odd }}\n{# ~~~~~~~~~~~~~~~~~~~~~~~~FILTERS~~~~~~~~~~~~~~~~~~~~~~~~ #}\n{% elif sd == \"Filters\" %}\n{% raw %}\n*********TEMPLATE:**********\nJinja template Filters are INCREDIBLY POWERFUL. They are also sometimes difficult to master.\nJinja Filters can modify variables. Filters can also be chained together, with the output of one\nfilter being passed to the next. Filters are separated from variables by a | \"pipe\" symbol.\n\nOne very useful example is casting a String type variable into an Integer type.  Here's an example:\n{% set number = \"1\" %}\n\nAdding a String to an Integer will result in concatenation: {{ number + 1 }}\nBut casting that String as an Integer first fixes the problem: {{ number|int + 1 }}\n\nThere are many other Filters for manipulating variables:\nChange string variables to upper case: {{ variable|upper }}\nOr lower case: {{ variable|lower }}\nOr capitalize: {{ variable|capitalize }}\nFinding unique values in a variable: {{ variable|unique }}\nGet the length of a variable: {{ variable|length }}\n\nThe best way to learn Filters is to try them out.\n\n{% endraw %}\n==========OUTPUT:===========\nJinja template Filters are INCREDIBLY POWERFUL. They are also sometimes difficult to master.\nJinja Filters can modify variables. Filters can also be chained together, with the output of one\nfilter being passed to the next. Filters are separated from variables by a | \"pipe\" symbol.\n\nOne very useful example is casting a String type variable into an Integer type.  Here's an example:\n{% set number = \"1\" %}\n\nAdding a String to an Integer will result in concatenation: {{ number + 1 }}\nBut casting that String as an Integer first fixes the problem: {{ number|int + 1 }}\n\nThere are many other Filters for manipulating variables:\nChange string variables to upper case: {{ variable|upper }}\nOr lower case: {{ variable|lower }}\nOr capitalize: {{ variable|capitalize }}\nFinding unique values in a variable: {{ variable|unique }}\nGet the length of a variable: {{ variable|length }}\n\nThe best way to learn Filters is to try them out.\n\n{% endif %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "variable",
+            "dataType": "STRING",
+            "defaultValue": "value",
+            "description": "Variable input",
+            "required": false,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "syntax_demo",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "SINGLE_SELECT",
+              "selectionValues": {
+                "Escaping": "Escaping",
+                "Filters": "Filters",
+                "ForLoop": "ForLoop",
+                "IfElse": "IfElse",
+                "Macros": "Macros",
+                "MathAndLogic": "MathAndLogic",
+                "Variables": "Variables"
+              },
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1659548854911,
+        "lastUpdateTime": 1659624631182,
+        "latestVersionTime": 1660235668076,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "d6ea0c5e-daf9-4a3b-bd1a-4b5a13638005",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "Jinja_CSV_Import_Demo",
+        "description": "A template to demonstrate importing variable inputs from a CSV file.  This example assumes that the API is used and that each row of the CSV file contains information on some iterable object on a single target device - like a list of switchport configs.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{# csv_data format example:\n[\n    {\n        \"int_name\": \"GigabitEthernet1/0/1\",\n        \"description\": \"My description\",\n        \"access_vlan_id\": \"10\",\n        \"voice_vlan_id\": \"100\",\n        \"config_type\": \"access\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% set csv_import = csv_data %}\n{% for item in csv_import %}\ninterface {{ item.int_name }}\n {% if item.config_type|lower == 'access' %}\n {{ basic_access_port(item.description, item.access_vlan_id, item.voice_vlan_id) }}\n {% elif item.config_type|lower == 'blackhole' %}\n {{ blackhole_port(item.description, item.access_vlan_id) }}\n {% else %}\n description {{ item.description }}\n switchport mode access\n switchport access vlan {{ item.access_vlan_id }}\n no shutdown\n {% endif %}\n{% endfor %}\n\n{# Uncomment to save configuration to startup. \n#MODE_ENABLE\ncopy run start\n#MODE_END_ENABLE\n#}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "data_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "voice_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "csv_data",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{# csv_data format example:\n[\n    {\n        \"int_name\": \"GigabitEthernet1/0/1\",\n        \"description\": \"My description\",\n        \"access_vlan_id\": \"10\",\n        \"voice_vlan_id\": \"100\",\n        \"config_type\": \"access\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% set csv_import = csv_data %}\n{% for item in csv_import %}\ninterface {{ item.int_name }}\n {% if item.config_type|lower == 'access' %}\n {{ basic_access_port(item.description, item.access_vlan_id, item.voice_vlan_id) }}\n {% elif item.config_type|lower == 'blackhole' %}\n {{ blackhole_port(item.description, item.access_vlan_id) }}\n {% else %}\n description {{ item.description }}\n switchport mode access\n switchport access vlan {{ item.access_vlan_id }}\n no shutdown\n {% endif %}\n{% endfor %}\n\n{# Uncomment to save configuration to startup. \n#MODE_ENABLE\ncopy run start\n#MODE_END_ENABLE\n#}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "data_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "csv_data",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "voice_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1660229932877,
+        "lastUpdateTime": 1660598693969,
+        "latestVersionTime": 1660598704587,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "8ea49e24-e0d9-4be0-804b-f0393be9df0c",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "macros_for_importing",
+        "description": "A collection of Jinja Macros that can be imported into demo templates.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{# Macros are reusable blocks of code stored separately from templates. #}\n{# Macros can be imported into any template and then referenced directly. #}\n{% macro simple_macro() %}\nName: simple_macro()\nThis is a simple imported macro. It doesn't accept any variable inputs.\n{% endmacro %}\n{% macro simple_macro_with_variable(input) %}\nName: simple_macro_with_variable()\nThis is a simple imported macro that accepts one input variable.\nThe value of the variable passed to this macro is: {{ input }}\n{% endmacro %}\n{% macro basic_access_port(description, data_vlan, voice_vlan) %}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ data_vlan }}\n {% if voice_vlan != \"\" %}\n switchport voice vlan {{ voice_vlan }}\n {% endif %}\n no shutdown\n{% endmacro %}\n{% macro blackhole_port(description, data_vlan) %}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ data_vlan }}\n shutdown\n{% endmacro %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{# Macros are reusable blocks of code stored separately from templates. #}\n{# Macros can be imported into any template and then referenced directly. #}\n{% macro simple_macro() %}\nName: simple_macro()\nThis is a simple imported macro. It doesn't accept any variable inputs.\n{% endmacro %}\n{% macro simple_macro_with_variable(input) %}\nName: simple_macro_with_variable()\nThis is a simple imported macro that accepts one input variable.\nThe value of the variable passed to this macro is: {{ input }}\n{% endmacro %}\n{% macro basic_access_port(description, data_vlan, voice_vlan) %}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ data_vlan }}\n {% if voice_vlan != \"\" %}\n switchport voice vlan {{ voice_vlan }}\n {% endif %}\n no shutdown\n{% endmacro %}\n{% macro blackhole_port(description, data_vlan) %}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ data_vlan }}\n shutdown\n{% endmacro %}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1659548933715,
+        "lastUpdateTime": 1660230210857,
+        "latestVersionTime": 1660235645909,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "6eee7c04-eacf-42b8-8036-30be46b1295f",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "Jinja_Port_Reset_CSV_Demo",
+        "description": "A template that accepts a List of Dictionaries as input, then loops through the objects to perform a switch port reset on the range of ports specified.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{# csv_data format example:\n[\n    {\n        \"port_name\": \"GigabitEthernet\",\n        \"module_number\": \"1\",\n        \"slot_number\": \"1\",\n        \"start_port\": \"3\",\n        \"end_port\": \"4\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% set port_range = csv_data %}\n{% for item in csv_data %}\n{% set start_port = item.start_port|int %}\n{% set end_port = item.end_port|int + 1 %}\n{% for number in range(start_port, end_port) %}\ndefault interface {{ item.port_name }}{{ item.module_number }}/{{ item.slot_number }}/{{ number }}\n{% endfor %}\n{% endfor %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "end_port",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "csv_data",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{# csv_data format example:\n[\n    {\n        \"port_name\": \"GigabitEthernet\",\n        \"module_number\": \"1\",\n        \"slot_number\": \"1\",\n        \"start_port\": \"3\",\n        \"end_port\": \"4\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% set port_range = csv_data %}\n{% for item in csv_data %}\n{% set start_port = item.start_port|int %}\n{% set end_port = item.end_port|int + 1 %}\n{% for number in range(start_port, end_port) %}\ndefault interface {{ item.port_name }}{{ item.module_number }}/{{ item.slot_number }}/{{ number }}\n{% endfor %}\n{% endfor %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "end_port",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "csv_data",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1660756640699,
+        "lastUpdateTime": 1660756772848,
+        "latestVersionTime": 1660756779745,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "afd4a368-fe3f-4eb1-8538-5b794c1cc4ac",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "All_System_Bind_Attributes_Demo",
+        "description": "A Jinja template to print out all Attributes of the System Bind Variables for \"__device\" and \"__interface\"",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Device Details:\n+++++++++++++++++++++++++++++++++++\n{% for key, value in __device.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\nInterface Details:\n{% for int in __interface %}\n{# Uncomment If statement to filter output to only physical interfaces #}\n{# {% if int.portType == \"Ethernet Port\" and int.interfaceType == \"Physical\" %} #}\n***********************************\n{% for key, value in int.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n===================================\n{# {% endif %} #}\n\n{% endfor %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Device Details:\n+++++++++++++++++++++++++++++++++++\n{% for key, value in __device.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\nInterface Details:\n{% for int in __interface %}\n{# Uncomment If statement to filter output to only physical interfaces #}\n{# {% if int.portType == \"Ethernet Port\" and int.interfaceType == \"Physical\" %} #}\n***********************************\n{% for key, value in int.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n===================================\n{# {% endif %} #}\n\n{% endfor %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1659711782588,
+        "lastUpdateTime": 1659711786767,
+        "latestVersionTime": 1660235660251,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "15ee89f9-76b9-4829-a01d-88eae7e92696",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      },
+      {
+        "name": "Jinja_System_Bind_Variable_Demo",
+        "description": "This template demonstrates how to leverage the DNA Center System Bind Variables, in order to obtain device-specific information in a template.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "This template makes use of DNA Center's \"Template System Variables\", \nalso called \"System Bind Variables\".\n\nDNA Center collects some information on each of the devices that are\nonboarded and managed by the appliance, and it stores that information\nin a database which we can reference through the proper System Bind\nVariables.\n\n###################\n### DEVICE INFO ###\n###################\nDevice Hostname:....................{{ __device.hostname }}\nDevice Family:......................{{ __device.family }}\nDevice Platform ID:.................{{ __device.platformId }}\nDevice Series:......................{{ __device.series }}\nDevice Role:........................{{ __device.role }}\nDevice Serial Number:...............{{ __device.serialNumber }}\nDevice Type:........................{{ __device.type }}\n###################\n###################\n\n{% for interface in __interface %}\n===================\nInterface Port Name:................{{ interface.portName }}\nInterface Index:....................{{ interface.ifIndex }}\nInterface Class Name:...............{{ interface.className }}\nInterface Type:.....................{{ interface.interfaceType }}\nInterface Mapped Physical Int ID:...{{ interface.mappedPhysicalInterfaceId }}\nInterface Mapped Physical Int Name:.{{ interface.mappedPhysicalInterfaceName }}\nInterface Media Type:...............{{ interface.mediaType }}\nInterface Network Device ID:........{{ interface.networkdevice_id }}\nInterface PID:......................{{ interface.pid }}\nInterface Port Mode:................{{ interface.portMode }}\nInterface Port Type:................{{ interface.portType }}\nInterface Description:..............{{ interface.description }}\nInterface VLAN ID:..................{{ interface.vlanId }}\nInterface Native VLAN ID:...........{{ interface.nativeVlanId }}\nInterface Voice VLAN:...............{{ interface.voiceVlan }}\nInterface Series:...................{{ interface.series }}\nInterface Speed:....................{{ interface.speed }}\n*******************\n\n{% endfor %}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "This template makes use of DNA Center's \"Template System Variables\", \nalso called \"System Bind Variables\".\n\nDNA Center collects some information on each of the devices that are\nonboarded and managed by the appliance, and it stores that information\nin a database which we can reference through the proper System Bind\nVariables.\n\n###################\n### DEVICE INFO ###\n###################\nDevice Hostname:....................{{ __device.hostname }}\nDevice Family:......................{{ __device.family }}\nDevice Platform ID:.................{{ __device.platformId }}\nDevice Series:......................{{ __device.series }}\nDevice Role:........................{{ __device.role }}\nDevice Serial Number:...............{{ __device.serialNumber }}\nDevice Type:........................{{ __device.type }}\n###################\n###################\n\n{% for interface in __interface %}\n===================\nInterface Port Name:................{{ interface.portName }}\nInterface Index:....................{{ interface.ifIndex }}\nInterface Class Name:...............{{ interface.className }}\nInterface Type:.....................{{ interface.interfaceType }}\nInterface Mapped Physical Int ID:...{{ interface.mappedPhysicalInterfaceId }}\nInterface Mapped Physical Int Name:.{{ interface.mappedPhysicalInterfaceName }}\nInterface Media Type:...............{{ interface.mediaType }}\nInterface Network Device ID:........{{ interface.networkdevice_id }}\nInterface PID:......................{{ interface.pid }}\nInterface Port Mode:................{{ interface.portMode }}\nInterface Port Type:................{{ interface.portType }}\nInterface Description:..............{{ interface.description }}\nInterface VLAN ID:..................{{ interface.vlanId }}\nInterface Native VLAN ID:...........{{ interface.nativeVlanId }}\nInterface Voice VLAN:...............{{ interface.voiceVlan }}\nInterface Series:...................{{ interface.series }}\nInterface Speed:....................{{ interface.speed }}\n*******************\n\n{% endfor %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1659624969242,
+        "lastUpdateTime": 1659625020865,
+        "latestVersionTime": 1660235678911,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "337a48ea-7e39-4276-9b6c-00f4b512124d",
+          "templateVersion": null
+        },
+        "documentDatabase": false,
+        "projectAssociated": true
+      }
+    ],
+    "isDeletable": true
+  }
+]

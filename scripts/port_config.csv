@@ -1,0 +1,3 @@
+int_name,description,access_vlan_id,voice_vlan_id,config_type
+GigabitEthernet1/1/3,1/1/3 Access Port,10,100,access
+GigabitEthernet1/1/4,1/1/4 Blackhole Port,999,,blackhole
