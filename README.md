@@ -95,7 +95,7 @@ column_header_2 = row_3_column_2_value
 The Python script requires several command line arguments in order to function properly.  You can view the Help output by issuing the command `python3 deploy_template.py --help`, or `py deploy_template.py --help` on Windows operating systems.  The necessary command line arguments are listed below:
 
 | CLI Argument | Value | Description |
-|:--- |:--- |: ---|
+| :--- | :--- | :--- |
 | `--username`</br>`-u` | admin | DNA Center username |
 | `--password`</br>`-p` | password | DNA Center password |
 | `--dnac_server` | `192.168.1.1`</br>`dnac_server.example.com` | DNA Center server IP Address or DNS Hostname |
