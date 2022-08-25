@@ -62,7 +62,7 @@ deviceId: <device_id>
 
 Additionally, you will need to uncomment line number 24 in the Playbook file, in order to import the `myvars.yml` file as one of the Variable Files referenced by the Playbook.
 
-<link to code snippet>
+https://github.com/miarond/DNA_Center_Templating/blob/a64572fbc174521821e4c9f3984d22cefb90559e/ansible/playbook_deploy_template_from_csv.yml#L24
 
 ```bash
 ansible-playbook -i hosts playbook_deploy_template_from_csv.yml -e "csv_file=port_config.csv"
