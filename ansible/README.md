@@ -56,8 +56,8 @@ Edit the `myvars.yml` file and set the variable values inside the file:
 ```yaml
 ---
 forcePush: true
-templateId: <template_id>
-deviceId: <device_id>
+templateId: <template_uuid>
+deviceId: <device_uuid>
 ```
 
 Additionally, you will need to uncomment line number 24 in the Playbook file, in order to import the `myvars.yml` file as one of the Variable Files referenced by the Playbook.
