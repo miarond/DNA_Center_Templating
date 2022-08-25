@@ -103,3 +103,7 @@ The Python script requires several command line arguments in order to function p
 | `--templateId` | `f89d61eb-65e9-46ae-8bdb-e81cd0ac910e` | Universally Unique Identifier (UUID) of Template, normally obtained via DNAC APIs |
 | `--deviceId` | `f89d61eb-65e9-46ae-8bdb-e81cd0ac910e` | Universally Unique Identifier (UUID) of target device, normally obtained via DNAC APIs |
 | `--csv_file` | `my_file.csv` | Filename and optionally full-path to input CSV file. |
+
+## Ansible Examples
+
+Refer to [README](/ansible/README.md) file.

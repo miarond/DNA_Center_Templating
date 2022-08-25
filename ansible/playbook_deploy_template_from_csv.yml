@@ -1,0 +1,90 @@
+---
+- name: Read Input From CSV File.
+  hosts: localhost
+  any_errors_fatal: true
+  gather_facts: no
+  tasks:
+    - name: Reading CSV file...
+      read_csv:
+        path: "{{csv_file}}"
+      register: csv_data
+
+    - debug:
+        var: csv_data
+    
+    - debug:
+        var: csv_data['list']
+
+- name: Deploy Template
+  hosts: dnac_servers
+  any_errors_fatal: true
+  gather_facts: no
+  vars_files:
+    - credentials.yml
+    # - myvars.yml  # You can omit this file and instead send Extra Variables via CLI command
+  tasks:
+    - name: Deploying Template (Step 1)...
+      cisco.dnac.configuration_template_deploy:
+        dnac_host: "{{dnac_host}}"
+        dnac_username: "{{dnac_username}}"
+        dnac_password: "{{dnac_password}}"
+        dnac_verify: "{{dnac_verify}}"
+        dnac_port: "{{dnac_port}}"
+        dnac_version: "{{dnac_version}}"
+        dnac_debug: "{{dnac_debug}}"
+        forcePushTemplate: "{{forcePush}}"
+        isComposite: false  # Can set as a variable if Composite templates might be used
+        templateId: "{{templateId}}"
+        targetInfo:
+        - id: "{{deviceId}}"
+          type: MANAGED_DEVICE_UUID  # Review "Deploy Template" API schema in your DNA Center Developer Toolkit for the most complete documentation
+          params:
+            csv_data: "{{hostvars['localhost']['csv_data']['list']}}"
+      register: deployment_result
+      failed_when: deployment_result.failed == "true"
+
+    - name: Printing Results
+      ansible.builtin.debug:
+        var: deployment_result
+    
+# If using Deploy Template V2, you need this step to get the Deployment ID
+    # - name: Checking Task ID (Step 2)...
+    #   cisco.dnac.task_info:
+    #     dnac_host: "{{dnac_host}}"
+    #     dnac_username: "{{dnac_username}}"
+    #     dnac_password: "{{dnac_password}}"
+    #     dnac_verify: "{{dnac_verify}}"
+    #     dnac_port: "{{dnac_port}}"
+    #     dnac_version: "{{dnac_version}}"
+    #     dnac_debug: "{{dnac_debug}}"
+    #     taskId: "{{deployment_result.dnac_response.response.taskId}}"
+    #   register: task_result
+    #   failed_when: task_result.failed == "true"
+
+    # - name: Printing Results
+    #   ansible.builtin.debug:
+    #     var: task_result
+   
+    - name: Extracting Deployment ID
+      ansible.builtin.set_fact:
+        deployId: "{{ deployment_result.dnac_response.deploymentId.split(':') | last | trim }}"
+    
+    - name: Getting Deployment Status (Step 2)...
+      cisco.dnac.configuration_template_deploy_status_info:
+        dnac_host: "{{dnac_host}}"
+        dnac_username: "{{dnac_username}}"
+        dnac_password: "{{dnac_password}}"
+        dnac_verify: "{{dnac_verify}}"
+        dnac_port: "{{dnac_port}}"
+        dnac_version: "{{dnac_version}}"
+        dnac_debug: "{{dnac_debug}}"
+        deploymentId: "{{deployId}}"
+      register: deployment_status
+      until: deployment_status.dnac_response.status in ["SUCCESS", "FAILURE"]
+      failed_when: deployment_status.failed == "true"
+      retries: 5
+      delay: 5
+    
+    - name: Printing Results
+      ansible.builtin.debug:
+        var: deployment_status
