@@ -37,6 +37,21 @@ dnac_verify: False  # optional, defaults to True
 dnac_debug: False  # optional, defaults to False
 ```
 
+### For MacOS Users
+
+If you're using macOS you may receive this error when running your playbook:
+
+```
+objc[34120]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.
+objc[34120]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called. We cannot safely call it or ignore it in the fork() child process. Crashing instead. Set a breakpoint on objc_initializeAfterForkError to debug.
+ERROR! A worker was found in a dead state
+```
+
+If that's the case try setting this environment variable:
+```
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+```
+
 ## Using This Playbook
 
 There are two options for utilizing this Playbook using the `ansible-playbook` command line program.  
