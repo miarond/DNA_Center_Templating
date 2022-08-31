@@ -17,6 +17,8 @@ To prepare for using this Ansible Playbook, you will need to install the followi
 
 You can do this by running the command `pip3 install -r requirements.txt` (using the requirements text file located in the root of this repository), or by manually installing the packages with the command `pip3 install ansible dnacentersdk` (this will install the latest versions).
 
+You will also need to install the DNA Center Ansible Module using the `ansible-galaxy collection install cisco.dnac` command.  Documentation for the installation process can be found here: https://github.com/cisco-en-programmability/dnacenter-ansible  Documentation for how to use the DNA Center Ansible Module can be found here:  https://cisco-en-programmability.github.io/dnacenter-ansible/
+
 Next, you will need to update the `hosts` and `credentials.yml` files with information specific to your DNA Center appliance.  The hosts file will contain a group name of `dnac_servers` and the IP address or hostname of your DNA Center server:
 
 ```
