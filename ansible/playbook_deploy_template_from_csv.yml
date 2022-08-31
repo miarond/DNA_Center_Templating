@@ -9,11 +9,9 @@
         path: "{{csv_file}}"
       register: csv_data
 
-    - debug:
+    - name: Printing Results
+      ansible.builtin.debug:
         var: csv_data
-    
-    - debug:
-        var: csv_data['list']
 
 - name: Deploy Template
   hosts: dnac_servers
