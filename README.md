@@ -2,7 +2,11 @@
 # DNA_Center_Templating
 A repository of resources for learning how to use templates in Cisco's DNA Center product.
 
-This repository contains a DNA Center Template "Project" in the `templates` subdirectory, which can be imported directly into DNA Center.  To import this JSON-formatted project file, follow these steps:
+This repository contains a DNA Center Template "Project" in the `templates` subdirectory, which can be imported directly into DNA Center.  
+
+To download this JSON file individually (if you are not cloning this repository), right-click on [this link](https://github.com/miarond/DNA_Center_Templating/raw/main/templates/Jinja_Template_Demos_Project.json) and choose **"Save Link As..."**.
+
+To import this JSON-formatted project file, follow these steps:
 
 1. Navigate in your DNA Center appliance to **Menu --> Tools --> Template Editor**.
 2. Click on the blue **"+"** button above the Tree Heirachy window on the left side of the screen.
