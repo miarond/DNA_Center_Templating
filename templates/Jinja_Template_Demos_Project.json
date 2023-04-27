@@ -79,8 +79,8 @@
           "templateId": "b900cc89-0a78-44df-8c26-4d0fe6978e1a",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "CIDR_Subnet_Masks",
@@ -143,8 +143,8 @@
           "templateId": "e0ff9143-e241-4d6e-9b8c-6e811b1a57d4",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "Jinja_Admin_Down_Port_Demo",
@@ -183,25 +183,6 @@
             "displayName": null
           },
           {
-            "parameterName": "access_vlan_id",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 3,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "displayName": null
-          },
-          {
             "parameterName": "__interface",
             "dataType": "STRING",
             "defaultValue": null,
@@ -224,6 +205,25 @@
             "provider": null,
             "binding": "",
             "displayName": null
+          },
+          {
+            "parameterName": "access_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
           }
         ],
         "rollbackTemplateParams": [],
@@ -232,6 +232,31 @@
         "language": "JINJA",
         "promotedTemplateContent": "{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% for int in __interface %}\n{% if int.portType == 'Ethernet Port' and int.interfaceType == 'Physical' and int.className == 'SwitchPort' and int.adminStatus == 'DOWN'%}\ninterface {{ int.portName }}\n{{ blackhole_port(description, access_vlan_id) }}\n{% endif %}\n{% endfor %}",
         "promotedTemplateParams": [
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
           {
             "parameterName": "access_vlan_id",
             "dataType": "STRING",
@@ -265,31 +290,6 @@
             "order": 2,
             "customOrder": 0,
             "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          },
-          {
-            "parameterName": "__interface",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": true,
-            "instructionText": null,
-            "group": null,
-            "order": 1,
-            "customOrder": 0,
-            "selection": {
-              "selectionType": "MULTI_SELECT",
-              "selectionValues": {},
-              "defaultSelectedValues": [],
-              "id": null
-            },
             "range": [],
             "key": null,
             "provider": null,
@@ -309,8 +309,45 @@
           "templateId": "636f6364-ca0e-466b-b2a1-01996e352526",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "Jinja_Whitespace_Demo",
+        "description": "A demo template that shows how to control whitespace within Jinja statements and loops.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{# Single-line comment #}\n{% else %}\n{# Comment whitespace being removed #}\n{%- else %}\n{# Loop new lines being removed #}\n{%- for i in range(10) %}\n{{ i }}\n{%- endfor %}\n\nPrint some output\n{# \nMulti-line\nComment\n#}\n{%- else %}\nPrint more output\n",
+        "rollbackTemplateContent": "",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{# Single-line comment #}\n{% else %}\n{# Comment whitespace being removed #}\n{%- else %}\n{# Loop new lines being removed #}\n{%- for i in range(10) %}\n{{ i }}\n{%- endfor %}\n\nPrint some output\n{# \nMulti-line\nComment\n#}\n{%- else %}\nPrint more output\n",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1682624025690,
+        "lastUpdateTime": 1682624115958,
+        "latestVersionTime": 1682624136015,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "a5a0d99e-1646-4936-8867-ac0d306c3454",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "Jinja_GUI_Interface_Picker_Demo",
@@ -327,7 +364,7 @@
         "rollbackTemplateContent": "",
         "templateParams": [
           {
-            "parameterName": "description",
+            "parameterName": "voice_vlan_id",
             "dataType": "STRING",
             "defaultValue": null,
             "description": null,
@@ -336,7 +373,7 @@
             "paramArray": false,
             "instructionText": null,
             "group": null,
-            "order": 2,
+            "order": 4,
             "customOrder": 0,
             "selection": null,
             "range": [],
@@ -365,6 +402,25 @@
             "displayName": null
           },
           {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
             "parameterName": "interface_list",
             "dataType": "STRING",
             "defaultValue": null,
@@ -386,25 +442,6 @@
             "key": null,
             "provider": null,
             "binding": "{\"provider\":\"Inventory\",\"attributeToDisplay\":\"portName\",\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":\"f4807fdd-b9e1-427e-84fc-dfe8fb3ceff4\"},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"source\":\"Inventory\",\"entity\":\"Interface\",\"attribute\":\"portName\",\"filterType\":\"matches\",\"filterValue\":\"Ethernet Port\",\"filterByAttribute\":\"portType\"}",
-            "displayName": null
-          },
-          {
-            "parameterName": "voice_vlan_id",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 4,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
             "displayName": null
           }
         ],
@@ -414,51 +451,6 @@
         "language": "JINJA",
         "promotedTemplateContent": "{% for interface in interface_list %}\ninterface {{ interface }}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ access_vlan_id }}\n switchport voice vlan {{ voice_vlan_id }}\n{% endfor %}",
         "promotedTemplateParams": [
-          {
-            "parameterName": "voice_vlan_id",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 4,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          },
-          {
-            "parameterName": "interface_list",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": true,
-            "instructionText": null,
-            "group": null,
-            "order": 1,
-            "customOrder": 0,
-            "selection": {
-              "selectionType": "MULTI_SELECT",
-              "selectionValues": {},
-              "defaultSelectedValues": [],
-              "id": null
-            },
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "{\"provider\":\"Inventory\",\"attributeToDisplay\":\"portName\",\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":\"f4807fdd-b9e1-427e-84fc-dfe8fb3ceff4\"},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"source\":\"Inventory\",\"entity\":\"Interface\",\"attribute\":\"portName\",\"filterType\":\"matches\",\"filterValue\":\"Ethernet Port\",\"filterByAttribute\":\"portType\"}",
-            "id": null,
-            "displayName": null
-          },
           {
             "parameterName": "description",
             "dataType": "STRING",
@@ -476,6 +468,51 @@
             "key": null,
             "provider": null,
             "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "voice_vlan_id",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "interface_list",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "{\"provider\":\"Inventory\",\"attributeToDisplay\":\"portName\",\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":\"f4807fdd-b9e1-427e-84fc-dfe8fb3ceff4\"},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"source\":\"Inventory\",\"entity\":\"Interface\",\"attribute\":\"portName\",\"filterType\":\"matches\",\"filterValue\":\"Ethernet Port\",\"filterByAttribute\":\"portType\"}",
             "id": null,
             "displayName": null
           },
@@ -511,8 +548,200 @@
           "templateId": "8f9f8922-e2c5-4acc-86a2-3d25b09b3c1e",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "Jinja_CSV_Import_Demo",
+        "description": "A template to demonstrate importing variable inputs from a CSV file.  This example assumes that the API is used and that each row of the CSV file contains information on some iterable object on a single target device - like a list of switchport configs.",
+        "tags": [],
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{# csv_data format example:\n[\n    {\n        \"int_name\": \"GigabitEthernet1/0/1\",\n        \"description\": \"My description\",\n        \"access_vlan_id\": \"10\",\n        \"voice_vlan_id\": \"100\",\n        \"config_type\": \"access\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% set csv_import = csv_data %}\n{% for item in csv_import %}\ninterface {{ item.int_name }}\n {% if item.config_type|lower == 'access' %}\n {{ basic_access_port(item.description, item.access_vlan_id, item.voice_vlan_id) }}\n {% elif item.config_type|lower == 'blackhole' %}\n {{ blackhole_port(item.description, item.access_vlan_id) }}\n {% else %}\n description {{ item.description }}\n switchport mode access\n switchport access vlan {{ item.access_vlan_id }}\n no shutdown\n {% endif %}\n{% endfor %}\n\n{# Uncomment to save configuration to startup. \n#MODE_ENABLE\ncopy run start\n#MODE_END_ENABLE\n#}",
+        "rollbackTemplateContent": "",
+        "templateParams": [
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "data_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "csv_data",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "voice_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{# csv_data format example:\n[\n    {\n        \"int_name\": \"GigabitEthernet1/0/1\",\n        \"description\": \"My description\",\n        \"access_vlan_id\": \"10\",\n        \"voice_vlan_id\": \"100\",\n        \"config_type\": \"access\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% set csv_import = csv_data %}\n{% for item in csv_import %}\ninterface {{ item.int_name }}\n {% if item.config_type|lower == 'access' %}\n {{ basic_access_port(item.description, item.access_vlan_id, item.voice_vlan_id) }}\n {% elif item.config_type|lower == 'blackhole' %}\n {{ blackhole_port(item.description, item.access_vlan_id) }}\n {% else %}\n description {{ item.description }}\n switchport mode access\n switchport access vlan {{ item.access_vlan_id }}\n no shutdown\n {% endif %}\n{% endfor %}\n\n{# Uncomment to save configuration to startup. \n#MODE_ENABLE\ncopy run start\n#MODE_END_ENABLE\n#}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "voice_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "csv_data",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "data_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1660229932877,
+        "lastUpdateTime": 1660598693969,
+        "latestVersionTime": 1660598704587,
+        "projectName": "Jinja_Template_Demos",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "8ea49e24-e0d9-4be0-804b-f0393be9df0c",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "Jinja_Syntax_Demo",
@@ -664,200 +893,8 @@
           "templateId": "d6ea0c5e-daf9-4a3b-bd1a-4b5a13638005",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
-      },
-      {
-        "name": "Jinja_CSV_Import_Demo",
-        "description": "A template to demonstrate importing variable inputs from a CSV file.  This example assumes that the API is used and that each row of the CSV file contains information on some iterable object on a single target device - like a list of switchport configs.",
-        "tags": [],
-        "deviceTypes": [
-          {
-            "productFamily": "Switches and Hubs"
-          }
-        ],
-        "softwareType": "IOS",
-        "softwareVariant": "XE",
-        "templateContent": "{# csv_data format example:\n[\n    {\n        \"int_name\": \"GigabitEthernet1/0/1\",\n        \"description\": \"My description\",\n        \"access_vlan_id\": \"10\",\n        \"voice_vlan_id\": \"100\",\n        \"config_type\": \"access\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% set csv_import = csv_data %}\n{% for item in csv_import %}\ninterface {{ item.int_name }}\n {% if item.config_type|lower == 'access' %}\n {{ basic_access_port(item.description, item.access_vlan_id, item.voice_vlan_id) }}\n {% elif item.config_type|lower == 'blackhole' %}\n {{ blackhole_port(item.description, item.access_vlan_id) }}\n {% else %}\n description {{ item.description }}\n switchport mode access\n switchport access vlan {{ item.access_vlan_id }}\n no shutdown\n {% endif %}\n{% endfor %}\n\n{# Uncomment to save configuration to startup. \n#MODE_ENABLE\ncopy run start\n#MODE_END_ENABLE\n#}",
-        "rollbackTemplateContent": "",
-        "templateParams": [
-          {
-            "parameterName": "description",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 2,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "displayName": null
-          },
-          {
-            "parameterName": "data_vlan",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 3,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "displayName": null
-          },
-          {
-            "parameterName": "voice_vlan",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 4,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "displayName": null
-          },
-          {
-            "parameterName": "csv_data",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 1,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "displayName": null
-          }
-        ],
-        "rollbackTemplateParams": [],
-        "composite": false,
-        "containingTemplates": [],
-        "language": "JINJA",
-        "promotedTemplateContent": "{# csv_data format example:\n[\n    {\n        \"int_name\": \"GigabitEthernet1/0/1\",\n        \"description\": \"My description\",\n        \"access_vlan_id\": \"10\",\n        \"voice_vlan_id\": \"100\",\n        \"config_type\": \"access\"\n    },\n    {\n        ...\n    }\n]\n#}\n{% include \"Jinja_Template_Demos/macros_for_importing\" %}\n{% set csv_import = csv_data %}\n{% for item in csv_import %}\ninterface {{ item.int_name }}\n {% if item.config_type|lower == 'access' %}\n {{ basic_access_port(item.description, item.access_vlan_id, item.voice_vlan_id) }}\n {% elif item.config_type|lower == 'blackhole' %}\n {{ blackhole_port(item.description, item.access_vlan_id) }}\n {% else %}\n description {{ item.description }}\n switchport mode access\n switchport access vlan {{ item.access_vlan_id }}\n no shutdown\n {% endif %}\n{% endfor %}\n\n{# Uncomment to save configuration to startup. \n#MODE_ENABLE\ncopy run start\n#MODE_END_ENABLE\n#}",
-        "promotedTemplateParams": [
-          {
-            "parameterName": "description",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 2,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          },
-          {
-            "parameterName": "data_vlan",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 3,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          },
-          {
-            "parameterName": "csv_data",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 1,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          },
-          {
-            "parameterName": "voice_vlan",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 4,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          }
-        ],
-        "customParamsOrder": false,
-        "createTime": 1660229932877,
-        "lastUpdateTime": 1660598693969,
-        "latestVersionTime": 1660598704587,
-        "projectName": "Jinja_Template_Demos",
-        "validationErrors": {
-          "templateErrors": [],
-          "rollbackTemplateErrors": [],
-          "templateId": "8ea49e24-e0d9-4be0-804b-f0393be9df0c",
-          "templateVersion": null
-        },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "macros_for_importing",
@@ -893,8 +930,8 @@
           "templateId": "6eee7c04-eacf-42b8-8036-30be46b1295f",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "Jinja_Port_Reset_CSV_Demo",
@@ -1017,8 +1054,8 @@
           "templateId": "afd4a368-fe3f-4eb1-8538-5b794c1cc4ac",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "All_System_Bind_Attributes_Demo",
@@ -1085,26 +1122,6 @@
         "promotedTemplateContent": "Device Details:\n+++++++++++++++++++++++++++++++++++\n{% for key, value in __device.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\nInterface Details:\n{% for int in __interface %}\n{# Uncomment If statement to filter output to only physical interfaces #}\n{# {% if int.portType == \"Ethernet Port\" and int.interfaceType == \"Physical\" %} #}\n***********************************\n{% for key, value in int.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n===================================\n{# {% endif %} #}\n\n{% endfor %}",
         "promotedTemplateParams": [
           {
-            "parameterName": "__device",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 1,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
-          },
-          {
             "parameterName": "__interface",
             "dataType": "STRING",
             "defaultValue": null,
@@ -1128,6 +1145,26 @@
             "binding": "",
             "id": null,
             "displayName": null
+          },
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
           }
         ],
         "customParamsOrder": false,
@@ -1141,8 +1178,8 @@
           "templateId": "15ee89f9-76b9-4829-a01d-88eae7e92696",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       },
       {
         "name": "Jinja_System_Bind_Variable_Demo",
@@ -1212,6 +1249,26 @@
         "promotedTemplateContent": "This template makes use of DNA Center's \"Template System Variables\", \nalso called \"System Bind Variables\".\n\nDNA Center collects some information on each of the devices that are\nonboarded and managed by the appliance, and it stores that information\nin a database which we can reference through the proper System Bind\nVariables.\n\n###################\n### DEVICE INFO ###\n###################\nDevice Hostname:....................{{ __device.hostname }}\nDevice Family:......................{{ __device.family }}\nDevice Platform ID:.................{{ __device.platformId }}\nDevice Series:......................{{ __device.series }}\nDevice Role:........................{{ __device.role }}\nDevice Serial Number:...............{{ __device.serialNumber }}\nDevice Type:........................{{ __device.type }}\n###################\n###################\n\n{% for interface in __interface %}\n===================\nInterface Port Name:................{{ interface.portName }}\nInterface Index:....................{{ interface.ifIndex }}\nInterface Class Name:...............{{ interface.className }}\nInterface Type:.....................{{ interface.interfaceType }}\nInterface Mapped Physical Int ID:...{{ interface.mappedPhysicalInterfaceId }}\nInterface Mapped Physical Int Name:.{{ interface.mappedPhysicalInterfaceName }}\nInterface Media Type:...............{{ interface.mediaType }}\nInterface Network Device ID:........{{ interface.networkdevice_id }}\nInterface PID:......................{{ interface.pid }}\nInterface Port Mode:................{{ interface.portMode }}\nInterface Port Type:................{{ interface.portType }}\nInterface Description:..............{{ interface.description }}\nInterface VLAN ID:..................{{ interface.vlanId }}\nInterface Native VLAN ID:...........{{ interface.nativeVlanId }}\nInterface Voice VLAN:...............{{ interface.voiceVlan }}\nInterface Series:...................{{ interface.series }}\nInterface Speed:....................{{ interface.speed }}\n*******************\n\n{% endfor %}",
         "promotedTemplateParams": [
           {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
             "parameterName": "__interface",
             "dataType": "STRING",
             "defaultValue": null,
@@ -1235,26 +1292,6 @@
             "binding": "",
             "id": null,
             "displayName": null
-          },
-          {
-            "parameterName": "__device",
-            "dataType": "STRING",
-            "defaultValue": null,
-            "description": null,
-            "required": true,
-            "notParam": false,
-            "paramArray": false,
-            "instructionText": null,
-            "group": null,
-            "order": 1,
-            "customOrder": 0,
-            "selection": null,
-            "range": [],
-            "key": null,
-            "provider": null,
-            "binding": "",
-            "id": null,
-            "displayName": null
           }
         ],
         "customParamsOrder": false,
@@ -1268,8 +1305,8 @@
           "templateId": "337a48ea-7e39-4276-9b6c-00f4b512124d",
           "templateVersion": null
         },
-        "documentDatabase": false,
-        "projectAssociated": true
+        "projectAssociated": true,
+        "documentDatabase": false
       }
     ],
     "isDeletable": true
