@@ -9,7 +9,7 @@ To download this JSON file individually (if you are not cloning this repository)
 To import this JSON-formatted project file, follow these steps:
 
 1. Navigate in your DNA Center appliance to **Menu --> Tools --> Template Editor**.
-2. Click on the blue **"+"** button above the Tree Heirachy window on the left side of the screen.
+2. Click on the blue **"+"** button above the Tree Hierachy window on the left side of the screen.
 3. Click on the **Import Project(s)** option from the dropdown menu.)
     1. <img src="/assets/add_button.png" alt="Add button" width="150" />
 4. In the dialog box that pops up, select the file to import and then click the **Import** button.
