@@ -95,10 +95,9 @@ interface {{ item.interface_name }} {{ item.interface_number }}
 
 ## Using the "template_runner.py" Script
 
-This script requires up to three external Python packages, which need to be installed using the "Pip" Package Manager - the necessary packages depend on which CLI options you choose.  These external packages are
+This script requires up to two external Python packages, which need to be installed using the "Pip" Package Manager - the necessary packages depend on which CLI options you choose.  These external packages are
 
 * [`requests` package](https://pypi.org/project/requests/): Used to build HTTP messages to make API calls.
-* [`pandas` package](https://pypi.org/project/pandas/): Used to flatten JSON response data, convert it to CSV format.
 * [`yaml` (PyYAML) package](): Used to read input data from a YAML formatted file, then convert it to JSON.
 
 ### Command Line Options
