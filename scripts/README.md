@@ -27,7 +27,7 @@ This script requires only one external Python package, which needs to be install
 You can view the script's Help documentation by executing the following command:
 
 * Mac or Linux: `python3 deploy_template.py --help`
-* Windows: `python.exe deploy_template.py --help`
+* Windows: `py.exe deploy_template.py --help`
 
 <u>Available Options</u>:
 
@@ -105,7 +105,7 @@ This script requires up to two external Python packages, which need to be instal
 You can view the script's Help documentation by executing the following command:
 
 * Mac or Linux: `python3 template_runner.py --help`
-* Windows: `python.exe template_runner.py --help`
+* Windows: `py.exe template_runner.py --help`
 
 <u>Available Options</u>:
 
