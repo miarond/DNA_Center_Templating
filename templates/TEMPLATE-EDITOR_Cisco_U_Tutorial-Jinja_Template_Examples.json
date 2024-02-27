@@ -1,0 +1,1616 @@
+[
+  {
+    "name": "Cisco_U_Tutorial-Jinja_Templating",
+    "description": "A collection of Jinja template examples for the Cisco U Tutorial on Catalyst Center Jinja Templating.",
+    "tags": [],
+    "templates": [
+      {
+        "name": "02-07_02_The_fromjson_Filter",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "The \"fromjson\" Filter\nCreating JSON from Strings:\n***********************************\n{# \nBy removing the \"set input_json_string\" line below, you can prompt the User for the input JSON string. \nNOTE: Having a comma-separated list of Trunk Allowed VLANs inside a CSV string will cause problems.\nYou would need to substitute a different delimiter character instead, and write additional code\nto split the Allowed VLANs list.\n#}\n{%- set input_json_string = '[{\"int_name\": \"GigabitEthernet1/0/1\", \"description\": \"Gig 1/0/1 description\", \"port_mode\": \"access\", \"access_vlan\": \"10\", \"trunk_native_vlan\": \"\", \"trunk_allowed_vlans\": \"\"}, {\"int_name\": \"GigabitEthernet1/0/2\", \"description\": \"Gig 1/0/2 description\", \"port_mode\": \"trunk\", \"access_vlan\": \"\", \"trunk_native_vlan\": \"5\", \"trunk_allowed_vlans\": \"5,10,15,20\"}]' %}\n{% set input_json = input_json_string | fromjson %}\n{% for port in input_json %}\ninterface {{ port.int_name }}\n description {{ port.description }}\n switchport mode {{ port.port_mode }}\n {% if port.port_mode == 'access' %}\n switchport access vlan {{ port.access_vlan }}\n {% else %}\n  {% if port.trunk_native_vlan != \"\" %}\n switchport trunk native vlan {{ port.trunk_native_vlan }}\n  {% endif %}\n  {% if port.trunk_allow_vlans != \"\" %}\n switchport trunk allowed vlans {{ port.trunk_allowed_vlans }}\n  {% endif %}\n {% endif %}\n{% endfor %}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "The \"fromjson\" Filter\nCreating JSON from Strings:\n***********************************\n{# \nBy removing the \"set input_json_string\" line below, you can prompt the User for the input JSON string. \nNOTE: Having a comma-separated list of Trunk Allowed VLANs inside a CSV string will cause problems.\nYou would need to substitute a different delimiter character instead, and write additional code\nto split the Allowed VLANs list.\n#}\n{%- set input_json_string = '[{\"int_name\": \"GigabitEthernet1/0/1\", \"description\": \"Gig 1/0/1 description\", \"port_mode\": \"access\", \"access_vlan\": \"10\", \"trunk_native_vlan\": \"\", \"trunk_allowed_vlans\": \"\"}, {\"int_name\": \"GigabitEthernet1/0/2\", \"description\": \"Gig 1/0/2 description\", \"port_mode\": \"trunk\", \"access_vlan\": \"\", \"trunk_native_vlan\": \"5\", \"trunk_allowed_vlans\": \"5,10,15,20\"}]' %}\n{% set input_json = input_json_string | fromjson %}\n{% for port in input_json %}\ninterface {{ port.int_name }}\n description {{ port.description }}\n switchport mode {{ port.port_mode }}\n {% if port.port_mode == 'access' %}\n switchport access vlan {{ port.access_vlan }}\n {% else %}\n  {% if port.trunk_native_vlan != \"\" %}\n switchport trunk native vlan {{ port.trunk_native_vlan }}\n  {% endif %}\n  {% if port.trunk_allow_vlans != \"\" %}\n switchport trunk allowed vlans {{ port.trunk_allowed_vlans }}\n  {% endif %}\n {% endif %}\n{% endfor %}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1706132315884,
+        "lastUpdateTime": 1706132658129,
+        "latestVersionTime": 1706132673546,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "6420e766-3e15-43f4-a570-925d4549c785",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-04_Special_Syntax",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Escaping Reserved Characters\n****************************\nThis is my example hash 7bf2fcc8072cd12094fa74fa822c3570f6686ca{{\"{%\"}}04704f8bc5b95da98560a6606\n\n{% raw %}\nThis is my example hash: 7bf2fcc8072cd12094fa74fa822c3570f6686ca{%04704f8bc5b95da98560a6606\n\nAnd here's some Jinja code:\n{% set my_variable = \"my value\" %}\n{% endraw %}\n\nControlling Whitespace\n****************************\n{# My first comment #}\n{% set my_variable = \"my value\" %}\n{{ my_variable }}\n-----------------\n{# My second comment #}\n{%- set my_variable2 = \"my value\" %}\n{{ my_variable }}\n-----------------\n{% for i in range(0,10) %}\n{{ i }}\n{% endfor %}\n-----------------\n{% for i in range(0,10) %}\n{{ i }}\n{%- endfor %}\n\n-----------------\n{# Comment Line 1 #}\n{# Comment Line 2 #}\n{# Comment Line 3 #}\n{%- for i in range(0,10) %}\n{{ i }}\n{%- endfor %}\n\n-----------------\n{# \nComment Line 1\nComment Line 2\nComment Line 3\n#}\n{%- for i in range(0,10) %}\n{{ i }}\n{%- endfor %}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Escaping Reserved Characters\n****************************\nThis is my example hash 7bf2fcc8072cd12094fa74fa822c3570f6686ca{{\"{%\"}}04704f8bc5b95da98560a6606\n\n{% raw %}\nThis is my example hash: 7bf2fcc8072cd12094fa74fa822c3570f6686ca{%04704f8bc5b95da98560a6606\n\nAnd here's some Jinja code:\n{% set my_variable = \"my value\" %}\n{% endraw %}\n\nControlling Whitespace\n****************************\n{# My first comment #}\n{% set my_variable = \"my value\" %}\n{{ my_variable }}\n-----------------\n{# My second comment #}\n{%- set my_variable2 = \"my value\" %}\n{{ my_variable }}\n-----------------\n{% for i in range(0,10) %}\n{{ i }}\n{% endfor %}\n-----------------\n{% for i in range(0,10) %}\n{{ i }}\n{%- endfor %}\n\n-----------------\n{# Comment Line 1 #}\n{# Comment Line 2 #}\n{# Comment Line 3 #}\n{%- for i in range(0,10) %}\n{{ i }}\n{%- endfor %}\n\n-----------------\n{# \nComment Line 1\nComment Line 2\nComment Line 3\n#}\n{%- for i in range(0,10) %}\n{{ i }}\n{%- endfor %}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1703258414346,
+        "lastUpdateTime": 1706134490167,
+        "latestVersionTime": 1706135049898,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "650adfad-d9f6-44f5-8057-1ab0e0276e08",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-05_Catalyst_Center_Special_Keywords",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Enable Mode\n***************************\n#MODE_ENABLE\nenable_mode_cli_command\nenable_mode_cli_command\n#MODE_END_ENABLE\n\nInteractive Commands\n***************************\n#INTERACTIVE\nno crypto pki trustpoint DNAC-CA<IQ>yes/no<R>yes\n#ENDS_INTERACTIVE\n\nMulti-Line Commands\n***************************\n<MLTCMD>command_line_1\ncommand_line_2\ncommand_line_3</MLTCMD>\n\nIgnore Compliance Checks\n***************************\n! @start_ignore_compliance\nno interface Loopback0\n! @end_ignore_compliance",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Enable Mode\n***************************\n#MODE_ENABLE\nenable_mode_cli_command\nenable_mode_cli_command\n#MODE_END_ENABLE\n\nInteractive Commands\n***************************\n#INTERACTIVE\nno crypto pki trustpoint DNAC-CA<IQ>yes/no<R>yes\n#ENDS_INTERACTIVE\n\nMulti-Line Commands\n***************************\n<MLTCMD>command_line_1\ncommand_line_2\ncommand_line_3</MLTCMD>\n\nIgnore Compliance Checks\n***************************\n! @start_ignore_compliance\nno interface Loopback0\n! @end_ignore_compliance",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1706121921844,
+        "lastUpdateTime": 1706122097659,
+        "latestVersionTime": 1706122135887,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "48bf576e-380c-4d33-997f-4bed9167f709",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-05_For_Loops",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Range Loop Example:\n***************************\n{% for i in range(0,10) %}\n{{ i }}\n{% endfor %}\n\nList Loop Example:\n***************************\n{# Hey, it's our fruit list again! #}\n{%- set my_fruit_list = [\"apple\", \"banana\", \"pear\", \"peach\", \"watermelon\"] %}\n{% for fruit in my_fruit_list %}\n{% if \"p\" in fruit %}\nThere's a \"p\" in my fruit basket! {{ fruit }}\n{% endif %}\n{% endfor %}\n\nLoop Indexes Example:\n***************************\n{% for item in [2,3,5,7,11,13] %}\nCurrent item: {{ item }}\nCurrent index: {{ loop.index }}\nCurrent index0: {{ loop.index0 }}\n\n{% endfor %}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Range Loop Example:\n***************************\n{% for i in range(0,10) %}\n{{ i }}\n{% endfor %}\n\nList Loop Example:\n***************************\n{# Hey, it's our fruit list again! #}\n{%- set my_fruit_list = [\"apple\", \"banana\", \"pear\", \"peach\", \"watermelon\"] %}\n{% for fruit in my_fruit_list %}\n{% if \"p\" in fruit %}\nThere's a \"p\" in my fruit basket! {{ fruit }}\n{% endif %}\n{% endfor %}\n\nLoop Indexes Example:\n***************************\n{% for item in [2,3,5,7,11,13] %}\nCurrent item: {{ item }}\nCurrent index: {{ loop.index }}\nCurrent index0: {{ loop.index0 }}\n\n{% endfor %}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1703275945266,
+        "lastUpdateTime": 1706130555664,
+        "latestVersionTime": 1706130562062,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "1100bbb9-8212-42e6-9d93-4f6c74ca2a7e",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-02_Math_Operators",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "2 + 5 = {{ 2 + 5 }}\n11 / 4 = {{ 11 / 4 }}\n11 // 4 = {{ 11 // 4 }}...Oops, it didn't round up.\n11 % 4 = {{ 11 % 4 }}\n3 * 3 = {{ 3 * 3 }}\n3 ** 3 = {{ 3 ** 3 }}\n\n{% set var1 = \"1\" -%}\n{# Below is an example of \"String Concatenation\" #}\n\"1\" + 1 = {{ var1 + 1 }}...Uh oh!\n{% set var2 = 1 %}\n1 + 1 = {{ var2 + 1 }}...That's better!",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "2 + 5 = {{ 2 + 5 }}\n11 / 4 = {{ 11 / 4 }}\n11 // 4 = {{ 11 // 4 }}...Oops, it didn't round up.\n11 % 4 = {{ 11 % 4 }}\n3 * 3 = {{ 3 * 3 }}\n3 ** 3 = {{ 3 ** 3 }}\n\n{% set var1 = \"1\" -%}\n{# Below is an example of \"String Concatenation\" #}\n\"1\" + 1 = {{ var1 + 1 }}...Uh oh!\n{% set var2 = 1 %}\n1 + 1 = {{ var2 + 1 }}...That's better!",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1703263920742,
+        "lastUpdateTime": 1706129446665,
+        "latestVersionTime": 1706129453531,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "16abae1c-dd7c-49c1-a740-65eabab4c154",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-08_Working_With_Lists",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% set my_fruit_list = [\"apple\", \"banana\", \"pear\", \"peach\", \"watermelon\"] %}\nHere's our current fruit list: {{ my_fruit_list }}\n{{ my_fruit_list[3] }}\n\nLooping Over a List:\n********************************\n{% for fruit in my_fruit_list %}\n{% if fruit == \"peach\" %}\nI FOUND THE {{ fruit }}!\n{% endif %}\n{% endfor %}\n\nEditing Lists:\n********************************\n{# Here's a new keyword we haven't seen: \"do\" #}\n{%- do my_fruit_list.remove(3) %}\nThere, we removed \"peach\": {{ my_fruit_list }}\n\n{# Appending a fruit to the end of our List. #}\n{%- do my_fruit_list.append(\"lemon\") %}\nNow we've appended a fruit to the end: {{ my_fruit_list }}\n\n{# Inserting a fruit in the middle of our List. #}\n{%- do my_fruit_list.insert(2, \"apricot\") %}\nAnd here we've inserted a fruit in the middle: {{ my_fruit_list }}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% set my_fruit_list = [\"apple\", \"banana\", \"pear\", \"peach\", \"watermelon\"] %}\nHere's our current fruit list: {{ my_fruit_list }}\n{{ my_fruit_list[3] }}\n\nLooping Over a List:\n********************************\n{% for fruit in my_fruit_list %}\n{% if fruit == \"peach\" %}\nI FOUND THE {{ fruit }}!\n{% endif %}\n{% endfor %}\n\nEditing Lists:\n********************************\n{# Here's a new keyword we haven't seen: \"do\" #}\n{%- do my_fruit_list.remove(3) %}\nThere, we removed \"peach\": {{ my_fruit_list }}\n\n{# Appending a fruit to the end of our List. #}\n{%- do my_fruit_list.append(\"lemon\") %}\nNow we've appended a fruit to the end: {{ my_fruit_list }}\n\n{# Inserting a fruit in the middle of our List. #}\n{%- do my_fruit_list.insert(2, \"apricot\") %}\nAnd here we've inserted a fruit in the middle: {{ my_fruit_list }}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1701726406029,
+        "lastUpdateTime": 1706124251424,
+        "latestVersionTime": 1706124258363,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "ada9a0f1-d1f6-457a-bd3a-d3d9dde87bd8",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-04_If-Else_Conditionals",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Full If/Elif/Else Example:\n****************************\n{% set var = \"bar\" %}\n{% if var == \"foo\" %}\nCondition 1 is True\n{% elif var == \"bar\" %}\nCondition 2 is True\n{% else %}\nNo conditions matched\n{% endif %}\n\nMinimum If/Else Example:\n****************************\n{% if var == \"foo\" %}\nCondition 1 is True\n{% endif %}\n\n...Nothing is printed out because the If condition is false.",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Full If/Elif/Else Example:\n****************************\n{% set var = \"bar\" %}\n{% if var == \"foo\" %}\nCondition 1 is True\n{% elif var == \"bar\" %}\nCondition 2 is True\n{% else %}\nNo conditions matched\n{% endif %}\n\nMinimum If/Else Example:\n****************************\n{% if var == \"foo\" %}\nCondition 1 is True\n{% endif %}\n\n...Nothing is printed out because the If condition is false.",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1706130200323,
+        "lastUpdateTime": 1706130341177,
+        "latestVersionTime": 1706130375765,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "affab73c-29b5-4430-9657-55c405ca52e3",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-06_Jinja_Filters",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Chaining Filters\n***************************\n{% set my_variable = \"Filters are GREAT!\" %}\n{{ my_variable }}\n{{ my_variable | lower | title | reverse }}\n\nOther Useful Filters\n***************************\n{% set csv_string = \"1,3,5,7,9,11,13\" %}\nSplit \"{{ csv_string }}\" into a List: {{ csv_string | split(\",\") }}\n{% set trunc_string = \"The swift brown fox jumps over the lazy dog.\" %}\nTruncate \"{{ trunc_string }}\" to 15 characters: {{ trunc_string | truncate(15, true, \"\") }}\n{% set duplicate_list = [1, 1, 2, 4, 6, 6, 10] %}\nReturn only the unique values in {{ duplicate_list }}: {{ duplicate_list | unique }}\n{% set unordered_list = [3,9,1,13,2,25] %}\nSort the list {{ unordered_list }}: {{ unordered_list | sort }}\n\nData Type Conversion\n***************************\n{% set my_string_variable = \"12345\" %}\nOriginal String: {{ my_string_variable }}\n{{ type(my_string_variable) }}\n{% set my_int_variable = my_string_variable | int %}\n{{ type(my_int_variable) }}\n\nFailed Data Type Conversion\n***************************\n{% set my_string_variable2 = \"abcde\" %}\nOriginal String: {{ my_string_variable2 }}\n{{ type(my_string_variable2) }}\n{% set my_int_variable2 = my_string_variable2 | int %}\n{{ type(my_int_variable2) }}\n{{ my_int_variable2 }}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Chaining Filters\n***************************\n{% set my_variable = \"Filters are GREAT!\" %}\n{{ my_variable }}\n{{ my_variable | lower | title | reverse }}\n\nOther Useful Filters\n***************************\n{% set csv_string = \"1,3,5,7,9,11,13\" %}\nSplit \"{{ csv_string }}\" into a List: {{ csv_string | split(\",\") }}\n{% set trunc_string = \"The swift brown fox jumps over the lazy dog.\" %}\nTruncate \"{{ trunc_string }}\" to 15 characters: {{ trunc_string | truncate(15, true, \"\") }}\n{% set duplicate_list = [1, 1, 2, 4, 6, 6, 10] %}\nReturn only the unique values in {{ duplicate_list }}: {{ duplicate_list | unique }}\n{% set unordered_list = [3,9,1,13,2,25] %}\nSort the list {{ unordered_list }}: {{ unordered_list | sort }}\n\nData Type Conversion\n***************************\n{% set my_string_variable = \"12345\" %}\nOriginal String: {{ my_string_variable }}\n{{ type(my_string_variable) }}\n{% set my_int_variable = my_string_variable | int %}\n{{ type(my_int_variable) }}\n\nFailed Data Type Conversion\n***************************\n{% set my_string_variable2 = \"abcde\" %}\nOriginal String: {{ my_string_variable2 }}\n{{ type(my_string_variable2) }}\n{% set my_int_variable2 = my_string_variable2 | int %}\n{{ type(my_int_variable2) }}\n{{ my_int_variable2 }}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1703174553077,
+        "lastUpdateTime": 1706131802031,
+        "latestVersionTime": 1706132751981,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "8d324d8c-f192-426f-9f96-e6f612caac32",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-03_Basic_Jinja_Syntax",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{#\n{% set management_interface = \"GigabitEthernet0/0\" %}\ninterface {{ management_interface }}\n ip address {{ management_ip }} {{ management_subnet_mask }}\n no shutdown\n#}\n{%- set mgmt_int = management_interface %}\ninterface {{ mgmt_int }}\n ip address {{ management_ip }} {{ management_subnet_mask }}\n no shutdown",
+        "templateParams": [
+          {
+            "parameterName": "management_ip",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "management_subnet_mask",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "management_interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{#\n{% set management_interface = \"GigabitEthernet0/0\" %}\ninterface {{ management_interface }}\n ip address {{ management_ip }} {{ management_subnet_mask }}\n no shutdown\n#}\n{%- set mgmt_int = management_interface %}\ninterface {{ mgmt_int }}\n ip address {{ management_ip }} {{ management_subnet_mask }}\n no shutdown",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "management_ip",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "management_subnet_mask",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "management_interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1701723845603,
+        "lastUpdateTime": 1706121592235,
+        "latestVersionTime": 1706121600215,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "5f110932-5d93-4334-824f-ee9207c03a10",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-07_01_The_items_Filter",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "The \"items\" Filter\nLooping Over System Bind Variables:\n***********************************\n********* Device Attributes **********\n{% for key, value in __device.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n======================================\n\n******** Interface Attributes ********\n{% for int in __interface %}\nINTERFACE: {{ int.portName }}\n++++++++++++++++++++++++++++++++++++++\n{% for key, value in int.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n======================================\n\n{% endfor %}",
+        "templateParams": [
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "The \"items\" Filter\nLooping Over System Bind Variables:\n***********************************\n********* Device Attributes **********\n{% for key, value in __device.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n======================================\n\n******** Interface Attributes ********\n{% for int in __interface %}\nINTERFACE: {{ int.portName }}\n++++++++++++++++++++++++++++++++++++++\n{% for key, value in int.items() %}\n{{ key }}: {{ value }}\n{% endfor %}\n======================================\n\n{% endfor %}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "__device",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "__interface",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "MULTI_SELECT",
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1703189818898,
+        "lastUpdateTime": 1706132263578,
+        "latestVersionTime": 1706132270871,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "fa14728f-c080-4bd3-b368-594c431f9022",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-09-10_Include_and_Macro_Parent_Template",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% include \"02-09-10_Include_and_Macro_Child_Template\"%}\n{% set input_1 = input_1 %}\n{% set input_2 = input_2 %}\n\nHere I'm calling a variable from the Child template:\n{{ child_var }}\n\nHere I'm calling a simple Macro from the Child template:\n{{ simple_example_macro() }}\n\nHere I'm calling a complex Macro from the Child template:\n{{ complex_example_macro(input_1, input_2) }}\n\n{% set access_int_name = access_int_name %}\n{% set description = description %}\n{% set access_vlan = access_vlan %}\n{% set shutdown = shutdown %}\nHere is a sample Access Port configuration:\ninterface {{ access_int_name }}\n{{ access_port_config(description, access_vlan, shutdown) }}\n",
+        "templateParams": [
+          {
+            "parameterName": "shutdown",
+            "dataType": "STRING",
+            "defaultValue": "",
+            "description": "Should the port be shutdown?",
+            "required": false,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 6,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "SINGLE_SELECT",
+              "selectionValues": {
+                "no": "no",
+                "yes": "yes"
+              },
+              "defaultSelectedValues": [
+                "no"
+              ],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "input_1",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "access_int_name",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": "Ex: GigabitEthernet1/0/1",
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "access_vlan",
+            "dataType": "INTEGER",
+            "defaultValue": "",
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": "Access VLAN",
+            "group": null,
+            "order": 5,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [
+              {
+                "minValue": 1,
+                "maxValue": 4094,
+                "id": null
+              }
+            ],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": "",
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": "Interface Description",
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "input_2",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% include \"02-09-10_Include_and_Macro_Child_Template\"%}\n{% set input_1 = input_1 %}\n{% set input_2 = input_2 %}\n\nHere I'm calling a variable from the Child template:\n{{ child_var }}\n\nHere I'm calling a simple Macro from the Child template:\n{{ simple_example_macro() }}\n\nHere I'm calling a complex Macro from the Child template:\n{{ complex_example_macro(input_1, input_2) }}\n\n{% set access_int_name = access_int_name %}\n{% set description = description %}\n{% set access_vlan = access_vlan %}\n{% set shutdown = shutdown %}\nHere is a sample Access Port configuration:\ninterface {{ access_int_name }}\n{{ access_port_config(description, access_vlan, shutdown) }}\n",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "access_vlan",
+            "dataType": "INTEGER",
+            "defaultValue": "",
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": "Access VLAN",
+            "group": null,
+            "order": 5,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [
+              {
+                "minValue": 1,
+                "maxValue": 4094,
+                "id": null
+              }
+            ],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "access_int_name",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": "Ex: GigabitEthernet1/0/1",
+            "group": null,
+            "order": 3,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "description",
+            "dataType": "STRING",
+            "defaultValue": "",
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": "Interface Description",
+            "group": null,
+            "order": 4,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "input_2",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "shutdown",
+            "dataType": "STRING",
+            "defaultValue": "",
+            "description": "Should the port be shutdown?",
+            "required": false,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 6,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": "SINGLE_SELECT",
+              "selectionValues": {
+                "no": "no",
+                "yes": "yes"
+              },
+              "defaultSelectedValues": [
+                "no"
+              ],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "input_1",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1705078333638,
+        "lastUpdateTime": 1706133635210,
+        "latestVersionTime": 1706133642999,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "a7a66066-c85e-486c-a512-368317b87251",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-09-10_Include_and_Macro_Child_Template",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% set child_var = \"This is from the child template\" %}\n\n{% macro simple_example_macro() %}\nThis is a simple Macro example, with no input variables.\n{% endmacro %}\n\n{% macro complex_example_macro(input_variable, input_variable_2) %}\nThis is a complex Macro example, with two input variables.\n{% if input_variable | length > 0 %}\nThis was passed in to input_variable: {{ input_variable }}\n{% endif %}\n{% if input_variable_2 | length > 0 %}\nThis was passed in to input_variable_2: {{ input_variable_2 }}\n{% endif %}\n{% endmacro %}\n\n{% macro access_port_config(description, access_vlan, shutdown=\"no\") %}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ access_vlan }}\n {% if shutdown == \"yes\" %}\n shutdown\n {% endif %}\n{% endmacro %}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% set child_var = \"This is from the child template\" %}\n\n{% macro simple_example_macro() %}\nThis is a simple Macro example, with no input variables.\n{% endmacro %}\n\n{% macro complex_example_macro(input_variable, input_variable_2) %}\nThis is a complex Macro example, with two input variables.\n{% if input_variable | length > 0 %}\nThis was passed in to input_variable: {{ input_variable }}\n{% endif %}\n{% if input_variable_2 | length > 0 %}\nThis was passed in to input_variable_2: {{ input_variable_2 }}\n{% endif %}\n{% endmacro %}\n\n{% macro access_port_config(description, access_vlan, shutdown=\"no\") %}\n description {{ description }}\n switchport mode access\n switchport access vlan {{ access_vlan }}\n {% if shutdown == \"yes\" %}\n shutdown\n {% endif %}\n{% endmacro %}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1705078022176,
+        "lastUpdateTime": 1706133571870,
+        "latestVersionTime": 1706133386258,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "603caa6e-b30a-4a36-896b-e8919d84651b",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-03_Comparison_and_Logic_Operators",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Comparison Operators:\n********************************\n{% set example1 = \"my string\" %}\n{% set example2 = 5 %}\nexample1: {{ example1 }}\nexample2: {{ example2 }}\nIs example1 equal to \"my string\"? {{ example1 == \"my string\" }}\nIs example1 not equal to \"my string\"? {{ example1 != \"my string\" }}\nIs example2 greater than 4? {{ example2 > 4 }}\nIs example2 greater or equal to 6? {{ example2 >= 6 }}\nIs example2 less than 4? {{ example2 < 4 }}\nIs example2 less than or equal to 6? {{ example2 <= 6 }}\n\nLogic Operators:\n********************************\nIs 5 > 4 AND 6 < 7? {{ 5 > 4 and 6 < 7 }}\nIs 5 < 4 OR 6 > 7? {{ 5 < 4 or 6 > 7 }}\nIs 5 in [1,2,3,4,5]? {{ 5 in [1,2,3,4,5] }}\nIs 5 odd? {{ 5 is odd }}\nWhat is 20 - (5 * 3)? {{ 20 - (5 * 3) }}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Comparison Operators:\n********************************\n{% set example1 = \"my string\" %}\n{% set example2 = 5 %}\nexample1: {{ example1 }}\nexample2: {{ example2 }}\nIs example1 equal to \"my string\"? {{ example1 == \"my string\" }}\nIs example1 not equal to \"my string\"? {{ example1 != \"my string\" }}\nIs example2 greater than 4? {{ example2 > 4 }}\nIs example2 greater or equal to 6? {{ example2 >= 6 }}\nIs example2 less than 4? {{ example2 < 4 }}\nIs example2 less than or equal to 6? {{ example2 <= 6 }}\n\nLogic Operators:\n********************************\nIs 5 > 4 AND 6 < 7? {{ 5 > 4 and 6 < 7 }}\nIs 5 < 4 OR 6 > 7? {{ 5 < 4 or 6 > 7 }}\nIs 5 in [1,2,3,4,5]? {{ 5 in [1,2,3,4,5] }}\nIs 5 odd? {{ 5 is odd }}\nWhat is 20 - (5 * 3)? {{ 20 - (5 * 3) }}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1706129530665,
+        "lastUpdateTime": 1706130068477,
+        "latestVersionTime": 1706130113523,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "af6c6c46-eb2e-4614-a1c1-ac1b8209ab53",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-06_Data_Types",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Strings:\n{% set my_string = \"my string\" %}\n{{ type(my_string) }}\n\nIntegers:\n{% set my_int = 5 %}\n{{ type(my_int) }}\n{{ my_int is integer }}\n\nFloating Point Numbers:\n{% set my_float = 5.5 %}\n{{ type(my_float) }}\n\nBooleans:\n{% set my_boolean = true %}\n{{ type(my_boolean) }}\n\nLists:\n{% set my_list = [\"my string\", 5, true, [\"I'm another list\"], 10.2] %}\n{{ type(my_list) }}\n\nTuples:\n{% set my_tuple = (\"my string\", 5, true, [\"I'm another list\"], 10.2) %}\n{{ type(my_tuple) }}\n...A Tuple is essentially a read-only List\n\nDictionaries:\n{% set my_dict = {\"key1\": \"value1\", \"key2\": \"value2\", \"key3\": \"value3\"} %}\n{{ type(my_dict) }}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Strings:\n{% set my_string = \"my string\" %}\n{{ type(my_string) }}\n\nIntegers:\n{% set my_int = 5 %}\n{{ type(my_int) }}\n{{ my_int is integer }}\n\nFloating Point Numbers:\n{% set my_float = 5.5 %}\n{{ type(my_float) }}\n\nBooleans:\n{% set my_boolean = true %}\n{{ type(my_boolean) }}\n\nLists:\n{% set my_list = [\"my string\", 5, true, [\"I'm another list\"], 10.2] %}\n{{ type(my_list) }}\n\nTuples:\n{% set my_tuple = (\"my string\", 5, true, [\"I'm another list\"], 10.2) %}\n{{ type(my_tuple) }}\n...A Tuple is essentially a read-only List\n\nDictionaries:\n{% set my_dict = {\"key1\": \"value1\", \"key2\": \"value2\", \"key3\": \"value3\"} %}\n{{ type(my_dict) }}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1706122202418,
+        "lastUpdateTime": 1706123434288,
+        "latestVersionTime": 1706123461148,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "04b89d57-bf9e-4c02-83f1-0f7212d9ee26",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "02-08_Jinja_Tests",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "Is 5 in [1,3,5,7,9]? {{ 5 in [1,3,5,7,9] }}\n{% set my_var = \"my value\" %}\nIs my_var defined? {{ my_var is defined }}\nIs my_var undefined? {{ my_var is undefined }}\nIs 5 a...\n Boolean? {{ 5 is boolean }}\n String? {{ 5 is string }}\n Integer? {{ 5 is integer }}\n Float? {{ 5 is float }}\n Dictionary? {{ 5 is mapping }}\nIs 5 odd? {{ 5 is odd }}\nIs 5 even? {{ 5 is even }}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "Is 5 in [1,3,5,7,9]? {{ 5 in [1,3,5,7,9] }}\n{% set my_var = \"my value\" %}\nIs my_var defined? {{ my_var is defined }}\nIs my_var undefined? {{ my_var is undefined }}\nIs 5 a...\n Boolean? {{ 5 is boolean }}\n String? {{ 5 is string }}\n Integer? {{ 5 is integer }}\n Float? {{ 5 is float }}\n Dictionary? {{ 5 is mapping }}\nIs 5 odd? {{ 5 is odd }}\nIs 5 even? {{ 5 is even }}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1705000885379,
+        "lastUpdateTime": 1706133194085,
+        "latestVersionTime": 1706133201886,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "03169cb8-ceee-4dcc-b32b-127dd47a76e1",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-09_Working_With_Dictionaries",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Routers"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% set vlan_db = {\n  \"1\": \"DO NOT USE\",\n  \"10\": \"Management VLAN\",\n  \"15\": \"Printer VLAN\",\n  \"20\": \"Voice VLAN\",\n  \"123\": \"Guest VLAN\",\n  \"777\": \"POS VLAN\",\n  \"999\": \"Blackhole VLAN\"\n  } \n%}\n{% set create_vlan_str = create_vlan | string %}\nvlan {{ create_vlan }}\n {% if vlan_db[create_vlan_str] is defined %}\n name {{ vlan_db[create_vlan_str] }}\n {% else %}\n name VLAN_{{ create_vlan }}\n {% endif %}\n\n{# Example input for \"create_vlan_list\": 1,2,5,20,50,777,999 #}\n{%- set create_vlan_list = create_vlan_list | split(\",\") %}\n{% for vlan in create_vlan_list %}\n{% set vlan_str = vlan | string %}\nvlan {{ vlan }}\n{% if vlan_db[vlan_str] is defined %}\n name {{ vlan_db[vlan_str] }}\n {% else %}\n name VLAN_{{ vlan }}\n {% endif %}\n{% endfor %}\n\nEditing Dictionaries:\n**************************\nHere is the original vlan_db: {{ vlan_db }}\n{% do vlan_db.update({\"600\": \"Warehouse VLAN\", \"620\": \"Warehouse Voice VLAN\"}) %}\n{% do vlan_db.replace(\"1\", \"UNUSED VLAN\") %}\n{% do vlan_db.remove(\"15\") %}\nHere is the updated vlan_db: {{ vlan_db }}",
+        "templateParams": [
+          {
+            "parameterName": "create_vlan_list",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          },
+          {
+            "parameterName": "create_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "displayName": null
+          }
+        ],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% set vlan_db = {\n  \"1\": \"DO NOT USE\",\n  \"10\": \"Management VLAN\",\n  \"15\": \"Printer VLAN\",\n  \"20\": \"Voice VLAN\",\n  \"123\": \"Guest VLAN\",\n  \"777\": \"POS VLAN\",\n  \"999\": \"Blackhole VLAN\"\n  } \n%}\n{% set create_vlan_str = create_vlan | string %}\nvlan {{ create_vlan }}\n {% if vlan_db[create_vlan_str] is defined %}\n name {{ vlan_db[create_vlan_str] }}\n {% else %}\n name VLAN_{{ create_vlan }}\n {% endif %}\n\n{# Example input for \"create_vlan_list\": 1,2,5,20,50,777,999 #}\n{%- set create_vlan_list = create_vlan_list | split(\",\") %}\n{% for vlan in create_vlan_list %}\n{% set vlan_str = vlan | string %}\nvlan {{ vlan }}\n{% if vlan_db[vlan_str] is defined %}\n name {{ vlan_db[vlan_str] }}\n {% else %}\n name VLAN_{{ vlan }}\n {% endif %}\n{% endfor %}\n\nEditing Dictionaries:\n**************************\nHere is the original vlan_db: {{ vlan_db }}\n{% do vlan_db.update({\"600\": \"Warehouse VLAN\", \"620\": \"Warehouse Voice VLAN\"}) %}\n{% do vlan_db.replace(\"1\", \"UNUSED VLAN\") %}\n{% do vlan_db.remove(\"15\") %}\nHere is the updated vlan_db: {{ vlan_db }}",
+        "promotedTemplateParams": [
+          {
+            "parameterName": "create_vlan",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": false,
+            "instructionText": null,
+            "group": null,
+            "order": 1,
+            "customOrder": 0,
+            "selection": null,
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          },
+          {
+            "parameterName": "create_vlan_list",
+            "dataType": "STRING",
+            "defaultValue": null,
+            "description": null,
+            "required": true,
+            "notParam": false,
+            "paramArray": true,
+            "instructionText": null,
+            "group": null,
+            "order": 2,
+            "customOrder": 0,
+            "selection": {
+              "selectionType": null,
+              "selectionValues": {},
+              "defaultSelectedValues": [],
+              "id": null
+            },
+            "range": [],
+            "key": null,
+            "provider": null,
+            "binding": "",
+            "id": null,
+            "displayName": null
+          }
+        ],
+        "customParamsOrder": false,
+        "createTime": 1701803084340,
+        "lastUpdateTime": 1706128995231,
+        "latestVersionTime": 1706129001542,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "7e8134a8-ba7d-4550-8c1c-629ac463f85c",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      },
+      {
+        "name": "01-07_Working_With_Strings",
+        "description": "",
+        "tags": [],
+        "author": "ardonald",
+        "deviceTypes": [
+          {
+            "productFamily": "Network Management"
+          },
+          {
+            "productFamily": "Cisco Interfaces and Modules"
+          },
+          {
+            "productFamily": "Switches and Hubs"
+          },
+          {
+            "productFamily": "Storage Networking"
+          },
+          {
+            "productFamily": "NFV-ThirdParty Devices"
+          },
+          {
+            "productFamily": "Routers"
+          },
+          {
+            "productFamily": "Security and VPN"
+          },
+          {
+            "productFamily": "Voice and Telephony"
+          },
+          {
+            "productFamily": "Content Networking"
+          },
+          {
+            "productFamily": "Wireless Controller"
+          },
+          {
+            "productFamily": "Cisco Cloud Services Platform"
+          },
+          {
+            "productFamily": "NFVIS"
+          }
+        ],
+        "softwareType": "IOS",
+        "softwareVariant": "XE",
+        "templateContent": "{% set text = \"Hello World!\" %}\n{{ text[0:1] }}\n{{ text[6:7] }}\nHere we're specifying a start and end index number: {{ text[0:5] }}\nHere we're only giving an end index number: {{ text[:5] }}\nHere we're only giving a start index number: {{ text[6:] }}\n\nThis is an example of a \"method\": {{ text.length() }}\nThis is an example of a \"Filter\": {{ text | length }}\n\n{% set text_2 = \"hello world!\" %}\n{% set text_3 = \" HELLO WORLD!\" %}\nFilters:\nCapitalize: {{ text_2 | capitalize }}\nTitle: {{ text_2 | title }}\nUpper: {{ text_2 | upper }}\nLower: {{ text_3 | lower }}\nTrim: {{ text_3 | trim }}\nLength: {{ text_3 | length }}\nReplace: {{ text_2 | replace(\"hello\", \"goodbye\") }}\n\n{% set text_4 = \"GigabitEthernet1/0/12\" %}\nMethods:\ncontains: {{ text_2.contains(\"!\") }}\nindexOf: {{ text_2.indexOf(\"o\", 0) }}\nreplaceAll (with Regex): {{ text_4.replaceAll(\"(\\\\/[1-2][0-9])$\", \"\\\\/20\") }}\nreplaceAll (without Regex): {{ text_4.replaceAll(\"1\", \"2\") }}\nmatches (with Regex): {{ text_4.matches(\"^Giga.+[1-2]\\\\/0\\\\/[0-9]{2}$\") }}",
+        "templateParams": [],
+        "rollbackTemplateParams": [],
+        "composite": false,
+        "containingTemplates": [],
+        "language": "JINJA",
+        "promotedTemplateContent": "{% set text = \"Hello World!\" %}\n{{ text[0:1] }}\n{{ text[6:7] }}\nHere we're specifying a start and end index number: {{ text[0:5] }}\nHere we're only giving an end index number: {{ text[:5] }}\nHere we're only giving a start index number: {{ text[6:] }}\n\nThis is an example of a \"method\": {{ text.length() }}\nThis is an example of a \"Filter\": {{ text | length }}\n\n{% set text_2 = \"hello world!\" %}\n{% set text_3 = \" HELLO WORLD!\" %}\nFilters:\nCapitalize: {{ text_2 | capitalize }}\nTitle: {{ text_2 | title }}\nUpper: {{ text_2 | upper }}\nLower: {{ text_3 | lower }}\nTrim: {{ text_3 | trim }}\nLength: {{ text_3 | length }}\nReplace: {{ text_2 | replace(\"hello\", \"goodbye\") }}\n\n{% set text_4 = \"GigabitEthernet1/0/12\" %}\nMethods:\ncontains: {{ text_2.contains(\"!\") }}\nindexOf: {{ text_2.indexOf(\"o\", 0) }}\nreplaceAll (with Regex): {{ text_4.replaceAll(\"(\\\\/[1-2][0-9])$\", \"\\\\/20\") }}\nreplaceAll (without Regex): {{ text_4.replaceAll(\"1\", \"2\") }}\nmatches (with Regex): {{ text_4.matches(\"^Giga.+[1-2]\\\\/0\\\\/[0-9]{2}$\") }}",
+        "promotedTemplateParams": [],
+        "customParamsOrder": false,
+        "createTime": 1702324470436,
+        "lastUpdateTime": 1706123681501,
+        "latestVersionTime": 1706123688417,
+        "projectName": "Cisco_U_Tutorial-Jinja_Templating",
+        "validationErrors": {
+          "templateErrors": [],
+          "rollbackTemplateErrors": [],
+          "templateId": "6d925c0e-14ce-4885-a050-3d61dde0a713",
+          "templateVersion": null
+        },
+        "projectAssociated": true,
+        "documentDatabase": false
+      }
+    ],
+    "isDeletable": true
+  }
+]
