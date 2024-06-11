@@ -1,0 +1,906 @@
+[
+  {
+    "name": "Stack_Renumbering_Template",
+    "description": "",
+    "tags": [],
+    "author": "admin",
+    "deviceTypes": [
+      {
+        "productFamily": "Switches and Hubs",
+        "productSeries": "Cisco Catalyst 9300 Series Switches"
+      },
+      {
+        "productFamily": "Switches and Hubs",
+        "productSeries": "Cisco Catalyst 9200 Series Switches"
+      }
+    ],
+    "softwareType": "IOS",
+    "softwareVariant": "XE",
+    "templateContent": "{#\nSwitches 1 and 2 serial numbers and new stack numbers are required;\nall other fields are optional.\n#}\n{%- set switch_1_serial = switch_1_serial %}\n{% set switch_1_new_number = switch_1_new_number %}\n{% set switch_1_new_priority = switch_1_new_priority %}\n{% set switch_2_serial = switch_2_serial %}\n{% set switch_2_new_number = switch_2_new_number %}\n{% set switch_2_new_priority = switch_2_new_priority %}\n{% set switch_3_serial = switch_3_serial %}\n{% set switch_3_new_number = switch_3_new_number %}\n{% set switch_3_new_priority = switch_3_new_priority %}\n{% set switch_4_serial = switch_4_serial %}\n{% set switch_4_new_number = switch_4_new_number %}\n{% set switch_4_new_priority = switch_4_new_priority %}\n{% set switch_5_serial = switch_5_serial %}\n{% set switch_5_new_number = switch_5_new_number %}\n{% set switch_5_new_priority = switch_5_new_priority %}\nshell processing full\n{# Obtaining the current switch number, based on serial number #}\n#MODE_ENABLE\nswitch1=`show platform | grep {{ switch_1_serial }} | cut -c 2-3`\nswitch2=`show platform | grep {{ switch_2_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch1 renumber {{ switch_1_new_number }}<IQ>y/n<R>yes\nswitch $switch2 renumber {{ switch_2_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{# Integer data type variables which are left blank are stored as 0. #}\n{% if switch_1_new_priority > 0 %}\nswitch $switch1 priority {{ switch_1_new_priority }}\n{% endif %}\n{% if switch_2_new_priority > 0 %}\nswitch $switch2 priority {{ switch_2_new_priority }}\n{% endif %}\n{% if switch_3_serial | length > 0 %}\nswitch3=`show platform | grep {{ switch_3_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch3 renumber {{ switch_3_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{% if switch_3_new_priority > 0 %}\nswitch $switch3 priority {{ switch_3_new_priority }}\n{% endif %}\n{% endif %}\n{% if switch_4_serial | length > 0 %}\nswitch4=`show platform | grep {{ switch_4_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch4 renumber {{ switch_4_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{% if switch_4_new_priority > 0 %}\nswitch $switch4 priority {{ switch_4_new_priority }}\n{% endif %}\n{% endif %}\n{% if switch_5_serial | length > 0 %}\nswitch5=`show platform | grep {{ switch_5_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch5 renumber {{ switch_5_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{% if switch_5_new_priority > 0 %}\nswitch $switch5 priority {{ switch_5_new_priority }}\n{% endif %}\n{% endif %}\n#MODE_END_ENABLE\nno shell processing full\nevent manager applet REBOOT\nevent none maxrun 60\naction 1.0 cli command \"enable\"\naction 2.0 cli command \"write memory\"\naction 3.0 wait 30\naction 4.0 cli command \"reload\" pattern \"confirm\"\naction 5.0 cli command \"y\"\n#MODE_ENABLE\nevent manager run REBOOT",
+    "templateParams": [
+      {
+        "parameterName": "switch_3_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 7,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_4_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 10,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_5_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 15,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_5_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 13,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_4_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 12,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_3_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 9,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_2_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 5,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_4_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 11,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_2_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 4,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_1_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 3,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_3_new_number",
+        "dataType": "STRING",
+        "defaultValue": null,
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 8,
+        "customOrder": 0,
+        "selection": null,
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_2_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 6,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_1_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 1,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_1_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 2,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_5_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 14,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "displayName": null
+      }
+    ],
+    "rollbackTemplateParams": [],
+    "composite": false,
+    "containingTemplates": [],
+    "language": "JINJA",
+    "promotedTemplateContent": "{#\nSwitches 1 and 2 serial numbers and new stack numbers are required;\nall other fields are optional.\n#}\n{%- set switch_1_serial = switch_1_serial %}\n{% set switch_1_new_number = switch_1_new_number %}\n{% set switch_1_new_priority = switch_1_new_priority %}\n{% set switch_2_serial = switch_2_serial %}\n{% set switch_2_new_number = switch_2_new_number %}\n{% set switch_2_new_priority = switch_2_new_priority %}\n{% set switch_3_serial = switch_3_serial %}\n{% set switch_3_new_number = switch_3_new_number %}\n{% set switch_3_new_priority = switch_3_new_priority %}\n{% set switch_4_serial = switch_4_serial %}\n{% set switch_4_new_number = switch_4_new_number %}\n{% set switch_4_new_priority = switch_4_new_priority %}\n{% set switch_5_serial = switch_5_serial %}\n{% set switch_5_new_number = switch_5_new_number %}\n{% set switch_5_new_priority = switch_5_new_priority %}\nshell processing full\n{# Obtaining the current switch number, based on serial number #}\n#MODE_ENABLE\nswitch1=`show platform | grep {{ switch_1_serial }} | cut -c 2-3`\nswitch2=`show platform | grep {{ switch_2_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch1 renumber {{ switch_1_new_number }}<IQ>y/n<R>yes\nswitch $switch2 renumber {{ switch_2_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{# Integer data type variables which are left blank are stored as 0. #}\n{% if switch_1_new_priority > 0 %}\nswitch $switch1 priority {{ switch_1_new_priority }}\n{% endif %}\n{% if switch_2_new_priority > 0 %}\nswitch $switch2 priority {{ switch_2_new_priority }}\n{% endif %}\n{% if switch_3_serial | length > 0 %}\nswitch3=`show platform | grep {{ switch_3_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch3 renumber {{ switch_3_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{% if switch_3_new_priority > 0 %}\nswitch $switch3 priority {{ switch_3_new_priority }}\n{% endif %}\n{% endif %}\n{% if switch_4_serial | length > 0 %}\nswitch4=`show platform | grep {{ switch_4_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch4 renumber {{ switch_4_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{% if switch_4_new_priority > 0 %}\nswitch $switch4 priority {{ switch_4_new_priority }}\n{% endif %}\n{% endif %}\n{% if switch_5_serial | length > 0 %}\nswitch5=`show platform | grep {{ switch_5_serial }} | cut -c 2-3`\n#INTERACTIVE\nswitch $switch5 renumber {{ switch_5_new_number }}<IQ>y/n<R>yes\n#ENDS_INTERACTIVE\n{% if switch_5_new_priority > 0 %}\nswitch $switch5 priority {{ switch_5_new_priority }}\n{% endif %}\n{% endif %}\n#MODE_END_ENABLE\nno shell processing full\nevent manager applet REBOOT\nevent none maxrun 60\naction 1.0 cli command \"enable\"\naction 2.0 cli command \"write memory\"\naction 3.0 wait 30\naction 4.0 cli command \"reload\" pattern \"confirm\"\naction 5.0 cli command \"y\"\n#MODE_ENABLE\nevent manager run REBOOT",
+    "promotedTemplateParams": [
+      {
+        "parameterName": "switch_4_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 11,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_5_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 13,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_3_new_number",
+        "dataType": "STRING",
+        "defaultValue": null,
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 8,
+        "customOrder": 0,
+        "selection": null,
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_3_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 9,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_2_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 4,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_1_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 3,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_1_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 2,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_2_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 6,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_2_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 5,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_1_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": true,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 1,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_3_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 7,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_5_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 15,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_4_new_priority",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 12,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 15,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_5_new_number",
+        "dataType": "INTEGER",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": null,
+        "group": null,
+        "order": 14,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [
+          {
+            "minValue": 1,
+            "maxValue": 5,
+            "id": null
+          }
+        ],
+        "key": null,
+        "provider": null,
+        "binding": "",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      },
+      {
+        "parameterName": "switch_4_serial",
+        "dataType": "STRING",
+        "defaultValue": "",
+        "description": null,
+        "required": false,
+        "notParam": false,
+        "paramArray": false,
+        "instructionText": "Delete all but the correct serial number.",
+        "group": null,
+        "order": 10,
+        "customOrder": 0,
+        "selection": {
+          "selectionType": null,
+          "selectionValues": {},
+          "defaultSelectedValues": [],
+          "id": null
+        },
+        "range": [],
+        "key": null,
+        "provider": null,
+        "binding": "{\"provider\":\"Inventory\",\"source\":\"Inventory\",\"entity\":\"Device\",\"variableName\":\"__device\",\"attribute\":\"serialNumber\",\"attributeToDisplay\":\"managementIpAddress\",\"attributesAvailable\":[\"apEthernetMacAddress\",\"apManagerInterfaceIp\",\"associatedWlcIp\",\"bootDateTime\",\"collectionInterval\",\"collectionIntervalValue\",\"collectionStatus\",\"description\",\"deviceSupportLevel\",\"errorCode\",\"errorDescription\",\"family\",\"hostname\",\"inventoryStatusDetail\",\"lastUpdateTime\",\"lastUpdated\",\"macAddress\",\"managedAtleastOnce\",\"managementIpAddress\",\"managementState\",\"memorySize\",\"paddedMgmtIpAddress\",\"platformId\",\"reachabilityFailureReason\",\"reachabilityStatus\",\"role\",\"roleSource\",\"serialNumber\",\"series\",\"snmpContact\",\"snmpLocation\",\"softwareType\",\"softwareVersion\",\"tunnelUdpPort\",\"type\",\"upTime\",\"uptimeSeconds\",\"waasDeviceMode\"],\"params\":[{\"type\":\"MANAGED_DEVICE_UUID\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_IP\",\"scope\":\"RUNTIME\",\"value\":null},{\"type\":\"MANAGED_DEVICE_HOSTNAME\",\"scope\":\"RUNTIME\",\"value\":null}],\"value\":null,\"errorMessage\":null,\"sortAttribute\":null,\"sortValues\":null,\"filterType\":null,\"filterValue\":null,\"filterByAttribute\":null,\"filterSupported\":true}",
+        "sensitiveField": false,
+        "id": null,
+        "displayName": null
+      }
+    ],
+    "customParamsOrder": false,
+    "createTime": 1717692570942,
+    "lastUpdateTime": 1717705082325,
+    "latestVersionTime": 1717705094418,
+    "validationErrors": {
+      "templateErrors": [],
+      "rollbackTemplateErrors": [],
+      "templateId": "42e6149c-913f-43b2-bf03-fa63d35810d8",
+      "templateVersion": null
+    },
+    "noOfConflicts": 0,
+    "documentDatabase": false,
+    "projectAssociated": true
+  }
+]
