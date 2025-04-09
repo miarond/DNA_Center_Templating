@@ -1,3 +1,26 @@
+"""
+Copyright (c) 2023 Cisco and/or its affiliates.
+
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+
+               https://developer.cisco.com/docs/licenses
+
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+
+"""
+
+__author__ = "Aron Donaldson <ardonald@cisco.com>"
+__contributors__ = ""
+__copyright__ = "Copyright (c) 2023 Cisco and/or its affiliates."
+__license__ = "Cisco Sample Code License, Version 1.1"
+
 import csv
 import json
 import sys
@@ -14,6 +37,7 @@ urllib3.disable_warnings()
 
 # Set global level variable for verbosity
 verbose = bool()
+bind_variables = False
 
 def verbose_output(func_name, response):
     # Print verbose API response data to Console
@@ -82,6 +106,7 @@ def parse_yaml(yaml_file):
 
 
 def get_template_uuid(token, dnac_server, projectName, template_name):
+    global bind_variables
     # Make API call to DNAC to resolve template name to UUID
     url = f'https://{dnac_server}/dna/intent/api/v2/template-programmer/template'
     headers = {
@@ -96,11 +121,17 @@ def get_template_uuid(token, dnac_server, projectName, template_name):
     result = requests.get(url, headers=headers, params=params, verify=False)
     if verbose:
         verbose_output('get_template_uuid()', result)
-    if result.status_code in [200, 201, 202]:
+    if result.status_code in [200, 201, 202] and len(result.json()['response']) > 0:
+        # Check if this template is using implicit System Bind Variables
+        if len(result.json()['response'][0]['templateParams']) > 0:
+            for param in result.json()['response'][0]['templateParams']:
+                if param['parameterName'][0:2] == "__" or param['binding'] != "":
+                    bind_variables = True
         # Returns only the first search result - this could be a problem if multiple matches are found.
         return result.json()['response'][0]['id']
     else:
         print('Error locating template UUID.\n')
+        print(f'Response: {result.json()}')
         sys.exit(1)
 
 
@@ -137,14 +168,25 @@ def preview_template(token, dnac_server, template_id, device_id, input_data):
         "Content-Type": "application/json",
         "x-auth-token": token
     }
-    payload = {
-        "deviceId": device_id,
-        "templateId": template_id,
-        "params": {
-            "input_data": input_data
+    if bind_variables:
+        payload = {
+            "deviceId": device_id,
+            "templateId": template_id,
+            "params": {},
+            "resourceParams": [
+                {
+                    "type": "MANAGED_DEVICE_UUID",
+                    "scope": "RUNTIME",
+                    "value": device_id
+                }
+            ]
         }
-        # "resourceParams": "any"
-    }
+    else:
+        payload = {
+            "deviceId": device_id,
+            "templateId": template_id,
+            "params": {},
+        }
     result = requests.put(url, headers=headers, json=payload, verify=False)
     if verbose:
         verbose_output('preview_template()', result)
@@ -163,19 +205,41 @@ def deploy_template(token, dnac_server, template_id, device_id, input_data):
         "Content-Type": "application/json",
         "x-auth-token": token
     }
-    payload = {
-        "forcePushTemplate": True,
-        "templateId": template_id,
-        "targetInfo": [
-            {
-                "id": device_id,
-                "type": "MANAGED_DEVICE_UUID",
-                "params": {
-                    "input_data": input_data
+    if bind_variables:
+        payload = {
+            "forcePushTemplate": True,
+            "templateId": template_id,
+            "targetInfo": [
+                {
+                    "id": device_id,
+                    "type": "MANAGED_DEVICE_UUID",
+                    "params": {
+                        "input_data": input_data
+                    }
                 }
-            }
-        ]
-    }
+            ],
+            "resourceParams": [
+                {
+                    "type": "MANAGED_DEVICE_UUID",
+                    "scope": "RUNTIME",
+                    "value": device_id
+                }
+            ]
+        }
+    else:
+        payload = {
+            "forcePushTemplate": True,
+            "templateId": template_id,
+            "targetInfo": [
+                {
+                    "id": device_id,
+                    "type": "MANAGED_DEVICE_UUID",
+                    "params": {
+                        "input_data": input_data
+                    }
+                }
+            ]
+        }
     result = requests.post(url, headers=headers, data=json.dumps(payload), verify=False)
     if verbose:
         verbose_output('deploy_template()', result)
