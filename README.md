@@ -1,4 +1,5 @@
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/miarond/DNA_Center_Templating)
+
 :star2: [Check out Cisco's Catalyst Center IaC Ansible Project!](https://github.com/cisco-en-programmability/catalyst-center-ansible-iac/tree/main/workflows/device_templates)
 
 # DNA_Center_Templating
